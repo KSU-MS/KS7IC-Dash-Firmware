@@ -1,4 +1,6 @@
 #include <Arduino.h>
+#include <NeoPixelBus.h>
+
 #include "IC_Dash.h"
 
 
