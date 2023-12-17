@@ -2,7 +2,7 @@
 #ifndef IC_DASH.H
 #define IC_DASH.H
 
-
+#include <Arduino.h>
 
 
 
@@ -22,7 +22,9 @@ public:
      IC_Dash();
     ~IC_Dash();
 
+    void tachometerHandler(uint8_t rpm);
 
+    void indicatorHandler();
 
 
 };
