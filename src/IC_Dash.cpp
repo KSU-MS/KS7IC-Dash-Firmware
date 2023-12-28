@@ -25,7 +25,7 @@ void IC_Dash::initDashLEDs()
 
 void IC_Dash::funkyLEDs()
 {
-    for (int i = 0; i < TACH_LEDS; i = i + 1)
+    for (int i = 0; i < TACH_LEDS; i++)
     {
         this->tachLEDs[i] = CRGB::Red;
         FastLED.show();
@@ -33,7 +33,7 @@ void IC_Dash::funkyLEDs()
         this->tachLEDs[i] = CRGB::Black;
     }
 
-    for (int i = 0; i < INDI_LEDS; i = i + 1)
+    for (int i = 0; i < INDI_LEDS; i++)
     {
         this->indiLEDs[i] = CRGB::Red;
         FastLED.show();
