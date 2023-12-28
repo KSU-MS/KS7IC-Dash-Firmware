@@ -1,3 +1,7 @@
+// Have to use FastLED because the pins I am using
+// 
+
+
 #include <Arduino.h>
 #include <NeoPixelBus.h>
 
@@ -6,15 +10,15 @@
 
 
 
-
 void setup()
 {
-    Serial.begin(9600);
+    IC_Dash_->initDashLEDs();
 }
 
 
 void loop()
 {
-    Serial.println("YIPPIE");
+    IC_Dash_->funkyLEDs(); // Testing tach and indi LEDs
     delay(1000);
 }
+
