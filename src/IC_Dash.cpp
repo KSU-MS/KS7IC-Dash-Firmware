@@ -1,4 +1,9 @@
 
+<<<<<<< Updated upstream
+=======
+#include <Arduino.h>
+
+>>>>>>> Stashed changes
 #include "IC_Dash.h"
 #include <FastLED.h>
 
