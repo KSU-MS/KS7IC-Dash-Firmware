@@ -11,7 +11,7 @@ IC_Dash::IC_Dash()
 
 IC_Dash::~IC_Dash()
 {
-
+    Serial.println("Bye Bye..");
 }
 
 
@@ -29,5 +29,13 @@ void IC_Dash::funkyLEDs()
         FastLED.show();
         delay(300);
         this->tachLEDs[i] = CRGB::Black;
+    }
+
+    for (int i = 0; i < INDI_LEDS; i = i + 1)
+    {
+        this->indiLEDs[i] = CRGB::Red;
+        FastLED.show();
+        delay(300);
+        this->indiLEDs[i] = CRGB::Black;
     }
 }

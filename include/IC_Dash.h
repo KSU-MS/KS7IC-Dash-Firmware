@@ -24,7 +24,7 @@ public:
     ~IC_Dash();
 
     void initDashLEDs();
-    void funkyLEDs();
+    void funkyLEDs(); // Tach and Indi test function
 
 };
 
