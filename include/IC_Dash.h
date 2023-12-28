@@ -15,16 +15,11 @@ class IC_Dash
 {
 private:
 
-    CRGB tachLEDs[TACH_LEDS];
-    CRGB indiLEDs[INDI_LEDS];
 
 public:
 
      IC_Dash();
     ~IC_Dash();
-
-    void initDashLEDs();
-    void funkyLEDs(); // Tach and Indi test function
 
 };
 
