@@ -1,18 +1,18 @@
+
 #include <Arduino.h>
 #include "IC_Dash.h"
 
 
 
 
-
 void setup()
 {
-    Serial.begin(9600);
+    IC_Dash_->initDashLEDs();
 }
 
 
 void loop()
 {
-    Serial.println("YIPPIE");
+    IC_Dash_->funkyLEDs(); // Testing tach LEDs
     delay(1000);
 }
