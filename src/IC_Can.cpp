@@ -6,3 +6,8 @@ IC_Can::IC_Can()
 {
     
 }
+
+IC_Can::~IC_Can()
+{
+    
+}

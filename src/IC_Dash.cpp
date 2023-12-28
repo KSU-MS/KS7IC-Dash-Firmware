@@ -1,6 +1,5 @@
 
 #include <Arduino.h>
-#include <WS2812Serial.h>
 
 #include "IC_Dash.h"
 #include <FastLED.h>
