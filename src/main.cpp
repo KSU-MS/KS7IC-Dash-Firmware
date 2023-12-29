@@ -1,22 +1,21 @@
-// Have to use FastLED because the pins I am using
-// 
-
-
 #include <Arduino.h>
+#include <WS2812Serial.h>
+#include <FlexCAN_T4.h>
+
 #include "IC_Dash.h"
+
 
 
 
 
 void setup()
 {
-    IC_Dash_->initDashLEDs();
+    Serial.begin(9600);
 }
 
 
 void loop()
 {
-    IC_Dash_->funkyLEDs(); // Testing tach and indi LEDs
+    Serial.println("YIPPIE");
     delay(1000);
 }
-
