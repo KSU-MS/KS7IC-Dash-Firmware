@@ -1,6 +1,6 @@
 
-#ifndef IC_DASH.H
-#define IC_DASH.H
+#ifndef IC_DASH .H
+#define IC_DASH .H
 
 #include <Arduino.h>
 
@@ -15,8 +15,8 @@ class IC_Dash
 {
 private:
 
-    CRGB tachLEDs[TACH_LEDS];
-    CRGB indiLEDs[INDI_LEDS];
+    CRGB tachLEDs[TACH_LEDS] = { 0 };
+    CRGB indiLEDs[INDI_LEDS] = { 0 };
 
 public:
 
@@ -24,7 +24,7 @@ public:
     ~IC_Dash();
 
     void initDashLEDs();
-    void funkyLEDs(); // Tach and Indi test function
+    void handleTachometer(uint16_t rpm);
 
 };
 

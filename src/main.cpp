@@ -3,11 +3,10 @@
 
 
 #include <Arduino.h>
-#include <NeoPixelBus.h>
-
 #include "IC_Dash.h"
 
 
+uint16_t rpm = 0;
 
 
 void setup()
@@ -18,7 +17,14 @@ void setup()
 
 void loop()
 {
-    IC_Dash_->funkyLEDs(); // Testing tach and indi LEDs
-    delay(1000);
+    IC_Dash_->handleTachometer(rpm); // Testing tach and indi LEDs
+    
+    rpm++;
+
+    if (rpm >= 512)
+    {
+        rpm = 0;
+    }
+    Serial.println("Hey!");
 }
 
