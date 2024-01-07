@@ -1,6 +1,6 @@
 
-#ifndef IC_DASH_UTILS .H
-#define IC_DASH_UTILS .H
+#ifndef IC_DASH_UTILS.H
+#define IC_DASH_UTILS.H
 
 
 
@@ -10,6 +10,8 @@
 
 #define TACH_DPIN   25
 #define INDI_DPIN   26
+
+#define MAX_RPM  12000
 
 
 

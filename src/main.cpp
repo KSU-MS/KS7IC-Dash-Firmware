@@ -4,10 +4,12 @@
 
 #include <Arduino.h>
 #include "IC_Dash.h"
+#include "Metro.h"
 
 
 uint16_t rpm = 0;
 
+Metro timer = Metro(3);
 
 void setup()
 {
@@ -17,14 +19,19 @@ void setup()
 
 void loop()
 {
-    IC_Dash_->handleTachometer(rpm); // Testing tach and indi LEDs
+    if (timer.check())
+    {
+        IC_Dash_->handleTachometer(rpm); // Testing tach and indi LEDs
+        //rpm++;       
+    }
     
     rpm++;
 
-    if (rpm >= 512)
+    delayMicroseconds(50);
+
+    if (rpm >= 12000)
     {
         rpm = 0;
     }
-    Serial.println("Hey!");
 }
 

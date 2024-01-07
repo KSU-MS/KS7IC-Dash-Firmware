@@ -32,14 +32,18 @@ void IC_Dash::handleTachometer(uint16_t rpm)
 {
     CRGB *leds = this->tachLEDs;
 
-    int height = map(rpm, 0, 512, 0, TACH_LEDS + 1);
-
     fill_gradient(leds, TACH_LEDS - 1, CHSV(0, 255, 255), 0, CHSV(70, 255, 255), SHORTEST_HUES);
+
+    int height = map(rpm, 0, MAX_RPM, 0, TACH_LEDS + 1);
 
     for (int i = 0; i < TACH_LEDS; i++) 
     {
-        if(i >= height) leds[i] = CRGB::Black;
+        if (i >= height) leds[i] = CRGB::Black;
     }
 
     FastLED.show();
 }
+
+
+
+

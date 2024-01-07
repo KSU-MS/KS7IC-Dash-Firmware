@@ -1,6 +1,6 @@
 
-#ifndef IC_DASH .H
-#define IC_DASH .H
+#ifndef IC_DASH.H
+#define IC_DASH.H
 
 #include <Arduino.h>
 
@@ -25,14 +25,10 @@ public:
 
     void initDashLEDs();
     void handleTachometer(uint16_t rpm);
-
 };
 
 
-
 static IC_Dash* IC_Dash_ = new IC_Dash();
-
-
 
 
 #endif
