@@ -1,6 +1,3 @@
-// Have to use FastLED because the pins I am using
-// 
-
 
 #include "IC_Dash.h"
 #include "Metro.h"
@@ -19,9 +16,10 @@ Metro gear_ = Metro(1000);
 
 
 
+
 void setup()
 {
-    IC_Dash_->initDashLEDs();
+    Serial.begin(9600);
 }
 
 
@@ -51,4 +49,3 @@ void loop()
         rpm = 0;
     }
 }
-

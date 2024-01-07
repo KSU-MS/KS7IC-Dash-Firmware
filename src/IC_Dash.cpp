@@ -19,15 +19,16 @@ IC_Dash::IC_Dash()
 
     digitalWrite(LOWV_EN, HIGH);
     delayMicroseconds(500);
+    
 }
 
 IC_Dash::~IC_Dash()
 {
-    Serial.println("Bye Bye..");
+    
 }
 
 
-void IC_Dash::initDashLEDs()
+void IC_Dash::setRPM(uint16_t rpm_)
 {
     FastLED.addLeds<WS2812, TACH_DPIN, GRB>(this->tachLEDs, TACH_LEDS);
     FastLED.addLeds<WS2812, INDI_DPIN, GRB>(this->indiLEDs, INDI_LEDS);
@@ -134,4 +135,23 @@ void IC_Dash::handleGear(uint8_t num)
 }
 
 
+void IC_Dash::setRPM(uint16_t rpm_)
+{
+    this->rpm = rpm_;
+}
 
+void IC_Dash::setGEAR(uint8_t gear_)
+{
+    this->gear = gear_;
+}
+
+
+uint16_t IC_Dash::getRPM()
+{
+    return this->rpm;
+}
+
+uint8_t IC_Dash::getGEAR()
+{
+    return this->gear;
+}
