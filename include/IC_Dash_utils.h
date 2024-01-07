@@ -20,13 +20,14 @@
 
 
 
+#define      _IC_CAN_ORG_   0
+#define      _IC_CAN_DUP_   1
 
+#define      _IC_CAN_RPM_   0
+#define     _IC_CAN_GEAR_   1
 
-
-
-
-
-
+#define  NUM_TX_MAILBOXES 2
+#define  NUM_RX_MAILBOXES 6
 
 
 
