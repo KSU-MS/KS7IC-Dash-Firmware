@@ -27,6 +27,9 @@ public:
     void setRPM(uint16_t rpm_);
     void setGEAR(uint8_t gear_);
 
+    uint16_t getRPM();
+    uint8_t getGEAR();
+
 };
 
 
