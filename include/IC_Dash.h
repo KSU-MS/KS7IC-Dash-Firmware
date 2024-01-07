@@ -2,11 +2,13 @@
 #ifndef IC_DASH.H
 #define IC_DASH.H
 
+
 #include <Arduino.h>
-
-
 #include <FastLED.h>
+
 #include "IC_Dash_utils.h"
+
+
 
 
 // BABABOOEY
@@ -18,6 +20,9 @@ private:
     CRGB tachLEDs[TACH_LEDS] = { 0 };
     CRGB indiLEDs[INDI_LEDS] = { 0 };
 
+    uint16_t rpm = 0;
+    uint8_t gear = 0;
+
 public:
 
      IC_Dash();
@@ -25,6 +30,8 @@ public:
 
     void initDashLEDs();
     void handleTachometer(uint16_t rpm);
+
+    void handleGear(uint8_t num);
 };
 
 
