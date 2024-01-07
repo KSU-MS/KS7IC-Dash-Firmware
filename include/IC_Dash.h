@@ -20,8 +20,8 @@ private:
     CRGB tachLEDs[TACH_LEDS] = { 0 };
     CRGB indiLEDs[INDI_LEDS] = { 0 };
 
-    uint16_t rpm = 0;
-    uint8_t gear = 0;
+    uint16_t rpm;
+    uint8_t gear;
 
 public:
 

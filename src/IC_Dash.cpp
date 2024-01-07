@@ -4,10 +4,27 @@
 
 
 
+// bool ConstructorStopRunningMoreThanOncePlease = false; // I for the life of me do not know why. I have tried various ways to fix it but my brain smooth.
+
+
 IC_Dash::IC_Dash()
 {
-    Serial.begin(9600);
-    Serial.println("Yippie");
+    // if (!ConstructorStopRunningMoreThanOncePlease)
+    // {
+    //     pinMode(LOWV_EN, OUTPUT);
+    //     pinMode(GEAR_EN, OUTPUT);
+
+    //     pinMode(BCD_A, OUTPUT);
+    //     pinMode(BCD_B, OUTPUT);
+    //     pinMode(BCD_C, OUTPUT);
+    //     pinMode(BCD_D, OUTPUT);
+
+    //     digitalWrite(LOWV_EN, HIGH);
+
+    //     delayMicroseconds(500);
+
+    //     ConstructorStopRunningMoreThanOncePlease = true;
+    // }
 
     pinMode(LOWV_EN, OUTPUT);
     pinMode(GEAR_EN, OUTPUT);
@@ -18,13 +35,13 @@ IC_Dash::IC_Dash()
     pinMode(BCD_D, OUTPUT);
 
     digitalWrite(LOWV_EN, HIGH);
+
     delayMicroseconds(500);
-    
 }
 
 IC_Dash::~IC_Dash()
 {
-    
+    Serial.println("Bye Bye..");
 }
 
 
@@ -33,7 +50,7 @@ void IC_Dash::initDashLEDs()
     FastLED.addLeds<WS2812, TACH_DPIN, GRB>(this->tachLEDs, TACH_LEDS);
     FastLED.addLeds<WS2812, INDI_DPIN, GRB>(this->indiLEDs, INDI_LEDS);
     FastLED.setMaxPowerInVoltsAndMilliamps(5, 500);
-    FastLED.setBrightness(10);
+    FastLED.setBrightness(1);
 }
 
 

@@ -20,7 +20,7 @@ IC_Can::IC_Can()
         this->IC_CAN_ORG.setMB((FLEXCAN_MAILBOX)i, TX, STD);
     }
 
-    this->IC_CAN_ORG.mailboxStatus();
+    // this->IC_CAN_ORG.mailboxStatus();
 
 
     this->IC_CAN_DUP.begin();
@@ -37,7 +37,9 @@ IC_Can::IC_Can()
         this->IC_CAN_DUP.setMB((FLEXCAN_MAILBOX)i, TX, STD);
     }
 
-    this->IC_CAN_DUP.mailboxStatus();
+    // this->IC_CAN_DUP.mailboxStatus();
+
+    Serial.println("IC CAN INIT");
 }
 
 IC_Can::~IC_Can()
@@ -46,7 +48,7 @@ IC_Can::~IC_Can()
 }
 
 
-int IC_Can::read_Can(IC_Dash& dash_, uint8_t can = _IC_CAN_ORG_)
+void IC_Can::read_Can(IC_Dash& dash_, uint8_t can = _IC_CAN_ORG_)
 {
     CAN_message_t msg;
 
@@ -66,7 +68,7 @@ int IC_Can::read_Can(IC_Dash& dash_, uint8_t can = _IC_CAN_ORG_)
     }
 }
 
-int IC_Can::write_Can(uint8_t can = _IC_CAN_DUP_, CAN_message_t& msg)
+void IC_Can::write_Can(uint8_t can, CAN_message_t& msg)
 {
     switch (can)
     {

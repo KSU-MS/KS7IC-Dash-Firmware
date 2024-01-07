@@ -9,7 +9,7 @@ uint16_t rpm = 0;
 
 uint8_t gear = 0;
 
-Metro timer = Metro(3);
+Metro timer = Metro(10);
 Metro gear_ = Metro(1000);
 
 
@@ -20,6 +20,7 @@ Metro gear_ = Metro(1000);
 void setup()
 {
     Serial.begin(9600);
+    IC_Dash_->initDashLEDs();
 }
 
 
@@ -27,7 +28,7 @@ void loop()
 {
     if (timer.check())
     {
-        // IC_Dash_->handleTachometer(rpm); // Testing tach and indi LEDs     
+        IC_Dash_->handleTachometer(rpm); // Testing tach and indi LEDs     
     }
 
     if (gear_.check())
