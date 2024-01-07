@@ -28,14 +28,12 @@ IC_Dash::~IC_Dash()
 }
 
 
-void IC_Dash::setRPM(uint16_t rpm_)
+void IC_Dash::initDashLEDs()
 {
     FastLED.addLeds<WS2812, TACH_DPIN, GRB>(this->tachLEDs, TACH_LEDS);
     FastLED.addLeds<WS2812, INDI_DPIN, GRB>(this->indiLEDs, INDI_LEDS);
     FastLED.setMaxPowerInVoltsAndMilliamps(5, 500);
     FastLED.setBrightness(10);
-
-    // fill_gradient(this->tachLEDs, TACH_LEDS - 1, CHSV(0, 255, 255), 0, CHSV(70, 255, 255), SHORTEST_HUES);
 }
 
 

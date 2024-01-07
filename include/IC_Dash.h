@@ -30,16 +30,14 @@ public:
 
     void initDashLEDs();
 
+    void handleTachometer(uint16_t rpm);
+    void handleGear(uint8_t num);
+
     void setRPM(uint16_t rpm_);
     void setGEAR(uint8_t gear_);
 
     uint16_t getRPM();
     uint8_t getGEAR();
-
-    void setRPM();
-
-    void handleTachometer(uint16_t rpm);
-    void handleGear(uint8_t num);
 };
 
 
