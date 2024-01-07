@@ -17,7 +17,7 @@ IC_Dash::IC_Dash()
     pinMode(BCD_C, OUTPUT);
     pinMode(BCD_D, OUTPUT);
 
-    digitalWrite(23, HIGH);
+    digitalWrite(LOWV_EN, HIGH);
     delayMicroseconds(500);
 }
 
@@ -37,6 +37,7 @@ void IC_Dash::initDashLEDs()
     // fill_gradient(this->tachLEDs, TACH_LEDS - 1, CHSV(0, 255, 255), 0, CHSV(70, 255, 255), SHORTEST_HUES);
 }
 
+
 void IC_Dash::handleTachometer(uint16_t rpm)
 {
     CRGB* leds = this->tachLEDs;
@@ -55,7 +56,6 @@ void IC_Dash::handleTachometer(uint16_t rpm)
 
     FastLED.show();
 }
-
 
 void IC_Dash::handleGear(uint8_t num)
 {
