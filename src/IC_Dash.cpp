@@ -137,11 +137,13 @@ void IC_Dash::handleDashStatus(uint8_t _status_)
 {
     CRGB* leds = this->statLEDs;
 
+    uint8_t mask;
+
     fill_solid(leds, STAT_LEDS, CRGB::Black);
 
     for (int i = 0; i < STAT_LEDS; i++)
     {
-        uint8_t mask = 1 << i;
+        mask = (1 << i);
 
         switch (_status_ & mask)
         {

@@ -62,7 +62,6 @@ void loop()
         {
             stat = 0;
         }
-
     }
 
     rpm++;
