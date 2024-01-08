@@ -12,9 +12,9 @@
 #define            BCD_D             41
 
 #define          TACH_LEDS           15
-#define          INDI_LEDS            5
+#define          STAT_LEDS            5
 
-#define     DASH_MAX_BRIGHTNESS      20
+#define      LED_MAX_BRIGHTNESS      20
 
 #define          TACH_DPIN           25
 #define          INDI_DPIN           26

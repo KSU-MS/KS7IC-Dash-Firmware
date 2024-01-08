@@ -7,11 +7,11 @@
 
 
 
-IC_Dash::IC_Dash(uint16_t _rpm_ = 0, uint8_t _gear_ = 0, uint8_t _indi_ = 0)
+IC_Dash::IC_Dash(uint16_t _rpm_ = 0, uint8_t _gear_ = 0, uint8_t _status_ = 0)
 {
-     this->rpm =  _rpm_;
-    this->gear = _gear_;
-    this->indi = _indi_;
+       this->rpm =    _rpm_;
+      this->gear =   _gear_;
+    this->status = _status_;
 
     Serial.println("Initializing DASH..");
 }
@@ -25,11 +25,11 @@ IC_Dash::~IC_Dash()
 void IC_Dash::initDashLEDs()
 {
     tachLEDs_.addLeds<WS2812, TACH_DPIN, GRB>(this->tachLEDs, TACH_LEDS);
-    indiLEDs_.addLeds<WS2812, INDI_DPIN, GRB>(this->indiLEDs, INDI_LEDS);
+    indiLEDs_.addLeds<WS2812, INDI_DPIN, GRB>(this->indiLEDs, STAT_LEDS);
     tachLEDs_.setMaxPowerInVoltsAndMilliamps(5, 200);
     indiLEDs_.setMaxPowerInVoltsAndMilliamps(5, 200);
-    tachLEDs_.setBrightness(DASH_MAX_BRIGHTNESS);
-    indiLEDs_.setBrightness(DASH_MAX_BRIGHTNESS);
+    tachLEDs_.setBrightness(LED_MAX_BRIGHTNESS);
+    indiLEDs_.setBrightness(LED_MAX_BRIGHTNESS);
 }
 
 
@@ -133,17 +133,17 @@ void IC_Dash::handleDashGear(uint8_t _num_)
     delayMicroseconds(100);
 }
 
-void IC_Dash::handleDashStatus(uint8_t _indi_)
+void IC_Dash::handleDashStatus(uint8_t _status_)
 {
     CRGB* leds = this->indiLEDs;
 
-    fill_solid(leds, INDI_LEDS, CRGB::Black);
+    fill_solid(leds, STAT_LEDS, CRGB::Black);
 
-    for (int i = 0; i < INDI_LEDS; i++)
+    for (int i = 0; i < STAT_LEDS; i++)
     {
         uint8_t mask = 1 << i;
 
-        switch (_indi_ & mask)
+        switch (_status_ & mask)
         {
         case _IC_NO_STATUS_:
             break;
@@ -181,9 +181,9 @@ void IC_Dash::setGEAR(uint8_t _gear_)
     this->gear = _gear_;
 }
 
-void IC_Dash::setINDI(uint8_t _indi_)
+void IC_Dash::setSTATUS(uint8_t _status_)
 {
-    this->indi = _indi_;
+    this->status = _status_;
 }
 
 
@@ -197,9 +197,9 @@ uint8_t IC_Dash::getGEAR()
     return this->gear;
 }
 
-uint8_t IC_Dash::getINDI()
+uint8_t IC_Dash::getSTATUS()
 {
-    return this->indi;
+    return this->status;
 }
 
 

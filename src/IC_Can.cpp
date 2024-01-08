@@ -63,7 +63,7 @@ void IC_Can::read_Can(IC_Dash* _ic_dash_, uint8_t _can_ = _IC_CAN_ORG_)
             _ic_dash_->setGEAR(_msg_.buf[0]);
             break;
         case _IC_CAN_INDI_:
-            _ic_dash_->setINDI(_msg_.buf[0]);
+            _ic_dash_->setSTATUS(_msg_.buf[0]);
             break;        
         default:
             break;

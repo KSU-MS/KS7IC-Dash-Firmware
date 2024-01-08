@@ -8,11 +8,11 @@
 
 uint16_t rpm = 0;
 uint8_t gear = 0;
-uint8_t indi = 0;
+uint8_t stat = 0;
 
-Metro timer = Metro(5);
+Metro tach_ = Metro(5);
 Metro gear_ = Metro(1000);
-Metro indi_ = Metro(1000);
+Metro stat_ = Metro(1000);
 
 
 
@@ -35,14 +35,14 @@ void loop()
     // As of right now these are just demostrating the final output results
     // These will not be in final build. Loop is reserved for actually doing the shit lol
 
-    if (timer.check())
+    if (tach_.check())
     {
-        // IC_Dash_->handleTachometer(rpm); // Testing tach and indi LEDs     
+        // IC_Dash_->handleDashTachometer(rpm); // Testing tach and indi LEDs     
     }
 
     if (gear_.check())
     {
-        IC_Dash_->handleGear(gear);
+        IC_Dash_->handleDashGear(gear);
 
         gear++;
 
@@ -52,9 +52,9 @@ void loop()
         }
     }
 
-    if (indi_.check())
+    if (stat_.check())
     {
-        IC_Dash_->handleIndicators(indi);
+        IC_Dash_->handleDashStatus(stat);
 
         indi++;
 
