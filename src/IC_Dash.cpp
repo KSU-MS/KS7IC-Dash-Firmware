@@ -33,7 +33,7 @@ void IC_Dash::initDashLEDs()
 }
 
 
-void IC_Dash::handleTachometer(uint16_t _rpm_)
+void IC_Dash::handleDashTachometer(uint16_t _rpm_)
 {
     CRGB* leds = this->tachLEDs;
 
@@ -52,7 +52,7 @@ void IC_Dash::handleTachometer(uint16_t _rpm_)
     tachLEDs_.show();
 }
 
-void IC_Dash::handleGear(uint8_t _num_)
+void IC_Dash::handleDashGear(uint8_t _num_)
 {
     digitalWrite(GEAR_EN, LOW);
     delayMicroseconds(100);
@@ -133,7 +133,7 @@ void IC_Dash::handleGear(uint8_t _num_)
     delayMicroseconds(100);
 }
 
-void IC_Dash::handleIndicators(uint8_t _indi_)
+void IC_Dash::handleDashStatus(uint8_t _indi_)
 {
     CRGB* leds = this->indiLEDs;
 

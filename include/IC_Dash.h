@@ -29,9 +29,9 @@ public:
 
     void initDashLEDs();
 
-    void handleTachometer(uint16_t _rpm_);
-    void handleGear(uint8_t _num_);
-    void handleIndicators(uint8_t _indi_);
+    void handleDashTachometer(uint16_t _rpm_);
+    void handleDashGear(uint8_t _num_);
+    void handleDashStatus(uint8_t _indi_);
 
     void setRPM(uint16_t _rpm_);
     void setGEAR(uint8_t _gear_);
