@@ -21,6 +21,9 @@
 
 #define           MAX_RPM          4096
 
+#define        _IC_CAN_NONE_          0
+#define       _IC_CAN_READY_          1
+
 #define        _IC_CAN_ORG_           0
 #define        _IC_CAN_DUP_           1
 

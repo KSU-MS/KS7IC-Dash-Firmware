@@ -44,16 +44,22 @@ IC_Can::IC_Can()
 
 IC_Can::~IC_Can()
 {
-    
+    Serial.println("Yeeting CAN..");
 }
 
 
 void IC_Can::read_Can(IC_Dash* _ic_dash_, uint8_t _can_ = _IC_CAN_ORG_)
 {
+    // Would like to see if using a switch case versus
+    // an if block is better at catching CAN frames.
+
     CAN_message_t _msg_;
 
-    if (this->IC_CAN_ORG.read(_msg_))
+    switch (this->IC_CAN_ORG.read(_msg_))
     {
+    case _IC_CAN_NONE_:
+        break;
+    case _IC_CAN_READY_:
         switch (_msg_.id)
         {
         case _IC_CAN_RPM_:
@@ -68,6 +74,9 @@ void IC_Can::read_Can(IC_Dash* _ic_dash_, uint8_t _can_ = _IC_CAN_ORG_)
         default:
             break;
         }
+        break;
+    default:
+        break;
     }
 }
 
