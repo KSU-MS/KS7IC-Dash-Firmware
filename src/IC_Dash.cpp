@@ -141,9 +141,9 @@ void IC_Dash::handleDashStatus(uint8_t _status_)
 
     fill_solid(leds, STAT_LEDS, CRGB::Black);
 
-    for (int i = 0; i < STAT_LEDS; i++)
+    for (uint8_t bit = 0; bit < STAT_LEDS; bit++)
     {
-        mask = (1 << i);
+        mask = (1 << bit);
 
         switch (_status_ & mask)
         {
