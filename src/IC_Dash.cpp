@@ -56,6 +56,11 @@ void IC_Dash::handleGear(uint8_t _num_)
 {
     digitalWrite(GEAR_EN, LOW);
     delayMicroseconds(100);
+
+    // I wish I could directly manipulate the ports because
+    // it would make this so much simpler but I picked pins 
+    // that did not belong to an emulated port on the teensy. 
+    // Something I need to take into consideration next time.
     
     switch (_num_)
     {
@@ -130,6 +135,8 @@ void IC_Dash::handleGear(uint8_t _num_)
 
 void IC_Dash::handleIndicators(uint8_t _ind_)
 {
+    // Working on optimizing this rn.
+    
     CRGB* leds = this->indiLEDs;
 
     fill_solid(leds, INDI_LEDS, CRGB::Black);
