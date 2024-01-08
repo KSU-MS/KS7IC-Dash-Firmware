@@ -30,7 +30,7 @@ public:
 };
 
 
-// static IC_Can* IC_Can_ = new IC_Can();
+static IC_Can* IC_Can_;
 
 
 #endif

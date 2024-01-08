@@ -48,7 +48,7 @@ static CFastLED indiLEDs_;
 
 void initDash(IC_Dash* _ic_dash_);
 
-// static IC_Dash* IC_Dash_ = new IC_Dash();
+static IC_Dash* IC_Dash_;
 
 #endif
 

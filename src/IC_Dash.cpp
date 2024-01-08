@@ -132,6 +132,8 @@ void IC_Dash::handleIndicators(uint8_t _ind_)
 {
     CRGB* leds = this->indiLEDs;
 
+    fill_solid(leds, INDI_LEDS, CRGB::Black);
+
     switch (_ind_)
     {
     case 0:

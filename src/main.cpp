@@ -10,11 +10,9 @@ uint16_t rpm = 0;
 uint8_t gear = 0;
 uint8_t indi = 0;
 
-Metro timer = Metro(2);
+Metro timer = Metro(5);
 Metro gear_ = Metro(1000);
 Metro indi_ = Metro(1000);
-
-
 
 
 
@@ -23,10 +21,10 @@ void setup()
 {
     Serial.begin(9600);
 
-    while(!Serial); // Wait for serial connection before proceeding
+    // while(!Serial); // Wait for serial connection before proceeding
 
-    static IC_Dash* IC_Dash_ = new IC_Dash();
-    static  IC_Can*  IC_Can_ = new  IC_Can();
+    IC_Dash_ = new IC_Dash();
+     IC_Can_ = new  IC_Can();
 
     initDash(IC_Dash_);
 }
@@ -36,12 +34,12 @@ void loop()
 {
     if (timer.check())
     {
-        // IC_Dash_->handleTachometer(rpm); // Testing tach and indi LEDs     
+        IC_Dash_->handleTachometer(rpm); // Testing tach and indi LEDs     
     }
 
     if (gear_.check())
     {
-        // IC_Dash_->handleGear(gear);
+        IC_Dash_->handleGear(gear);
 
         gear++;
 
@@ -53,7 +51,14 @@ void loop()
 
     if (indi_.check())
     {
-        //IC_Dash_->
+        IC_Dash_->handleIndicators(indi);
+
+        indi++;
+
+        if (indi > 5)
+        {
+            indi = 0;
+        }
 
     }
 
