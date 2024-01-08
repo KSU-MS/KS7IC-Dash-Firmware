@@ -16,7 +16,7 @@ class IC_Dash
 private:
 
     CRGB tachLEDs[TACH_LEDS] = {CRGB::Black};
-    CRGB indiLEDs[STAT_LEDS] = {CRGB::Black};
+    CRGB statLEDs[STAT_LEDS] = {CRGB::Black};
 
     uint16_t    rpm;
     uint8_t    gear;

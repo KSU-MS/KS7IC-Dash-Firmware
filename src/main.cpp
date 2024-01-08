@@ -56,11 +56,11 @@ void loop()
     {
         IC_Dash_->handleDashStatus(stat);
 
-        indi++;
+        stat++;
 
-        if (indi > 31)
+        if (stat > 31)
         {
-            indi = 0;
+            stat = 0;
         }
 
     }

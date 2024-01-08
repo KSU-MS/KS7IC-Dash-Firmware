@@ -25,7 +25,7 @@ IC_Dash::~IC_Dash()
 void IC_Dash::initDashLEDs()
 {
     tachLEDs_.addLeds<WS2812, TACH_DPIN, GRB>(this->tachLEDs, TACH_LEDS);
-    indiLEDs_.addLeds<WS2812, INDI_DPIN, GRB>(this->indiLEDs, STAT_LEDS);
+    indiLEDs_.addLeds<WS2812, INDI_DPIN, GRB>(this->statLEDs, STAT_LEDS);
     tachLEDs_.setMaxPowerInVoltsAndMilliamps(5, 200);
     indiLEDs_.setMaxPowerInVoltsAndMilliamps(5, 200);
     tachLEDs_.setBrightness(LED_MAX_BRIGHTNESS);
@@ -135,7 +135,7 @@ void IC_Dash::handleDashGear(uint8_t _num_)
 
 void IC_Dash::handleDashStatus(uint8_t _status_)
 {
-    CRGB* leds = this->indiLEDs;
+    CRGB* leds = this->statLEDs;
 
     fill_solid(leds, STAT_LEDS, CRGB::Black);
 
