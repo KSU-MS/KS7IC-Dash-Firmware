@@ -37,7 +37,7 @@ void loop()
 
     if (timer.check())
     {
-        IC_Dash_->handleTachometer(rpm); // Testing tach and indi LEDs     
+        // IC_Dash_->handleTachometer(rpm); // Testing tach and indi LEDs     
     }
 
     if (gear_.check())
