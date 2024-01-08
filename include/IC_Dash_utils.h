@@ -24,6 +24,7 @@
 
 #define      _IC_CAN_RPM_     0
 #define     _IC_CAN_GEAR_     1
+#define     _IC_CAN_INDI_     2
 
 #define  NUM_TX_MAILBOXES     2
 #define  NUM_RX_MAILBOXES     6

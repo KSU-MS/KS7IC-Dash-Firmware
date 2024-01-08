@@ -9,42 +9,46 @@
 #include "IC_Dash_utils.h"
 
 
-
-
 // BABABOOEY
 
 class IC_Dash
 {
 private:
 
-    CRGB tachLEDs[TACH_LEDS] = { 0 };
-    CRGB indiLEDs[INDI_LEDS] = { 0 };
+    CRGB tachLEDs[TACH_LEDS] = {CRGB::Black};
+    CRGB indiLEDs[INDI_LEDS] = {CRGB::Black};
 
     uint16_t rpm;
     uint8_t gear;
+    uint8_t indi;
 
 public:
 
-     IC_Dash();
+     IC_Dash(uint16_t _rpm_ = 0, uint8_t _gear_ = 0, uint8_t _indi_ = 0);
     ~IC_Dash();
 
     void initDashLEDs();
 
-    void handleTachometer(uint16_t rpm);
-    void handleGear(uint8_t num);
+    void handleTachometer(uint16_t _rpm_);
+    void handleGear(uint8_t _num_);
+    void handleIndicators(uint8_t _ind_);
 
-    void setRPM(uint16_t rpm_);
-    void setGEAR(uint8_t gear_);
+    void setRPM(uint16_t _rpm_);
+    void setGEAR(uint8_t _gear_);
+    void setINDI(uint8_t _indi_);
 
     uint16_t getRPM();
     uint8_t getGEAR();
+    uint8_t getINDI();
 };
 
 
-static IC_Dash* IC_Dash_ = new IC_Dash();
+static CFastLED tachLEDs_;
+static CFastLED indiLEDs_;
 
-// static IC_Dash_t* IC_Dash_t_;
+void initDash(IC_Dash* _ic_dash_);
 
+// static IC_Dash* IC_Dash_ = new IC_Dash();
 
 #endif
 

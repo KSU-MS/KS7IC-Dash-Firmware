@@ -39,7 +39,7 @@ IC_Can::IC_Can()
 
     // this->IC_CAN_DUP.mailboxStatus();
 
-    Serial.println("IC CAN INIT");
+    Serial.println("Initializing CAN..");
 }
 
 IC_Can::~IC_Can()
@@ -48,19 +48,22 @@ IC_Can::~IC_Can()
 }
 
 
-void IC_Can::read_Can(IC_Dash& dash_, uint8_t can = _IC_CAN_ORG_)
+void IC_Can::read_Can(IC_Dash* _ic_dash_, uint8_t _can_ = _IC_CAN_ORG_)
 {
-    CAN_message_t msg;
+    CAN_message_t _msg_;
 
-    if (this->IC_CAN_ORG.read(msg))
+    if (this->IC_CAN_ORG.read(_msg_))
     {
-        switch (msg.id)
+        switch (_msg_.id)
         {
         case _IC_CAN_RPM_:
-            dash_.setRPM(msg.buf[0]);
+            _ic_dash_->setRPM(_msg_.buf[0]);
             break;
         case _IC_CAN_GEAR_:
-            dash_.setGEAR(msg.buf[0]);
+            _ic_dash_->setGEAR(_msg_.buf[0]);
+            break;
+        case _IC_CAN_INDI_:
+            _ic_dash_->setINDI(_msg_.buf[0]);
             break;        
         default:
             break;
@@ -68,15 +71,15 @@ void IC_Can::read_Can(IC_Dash& dash_, uint8_t can = _IC_CAN_ORG_)
     }
 }
 
-void IC_Can::write_Can(uint8_t can, CAN_message_t& msg)
+void IC_Can::write_Can(CAN_message_t& _msg_, uint8_t _can_ = _IC_CAN_DUP_)
 {
-    switch (can)
+    switch (_can_)
     {
     case _IC_CAN_ORG_:
-        this->IC_CAN_ORG.write(msg);
+        this->IC_CAN_ORG.write(_msg_);
         break;
     case _IC_CAN_DUP_:
-        this->IC_CAN_DUP.write(msg);
+        this->IC_CAN_DUP.write(_msg_);
         break;
     default:
         break;

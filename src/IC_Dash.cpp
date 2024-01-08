@@ -1,42 +1,19 @@
 
 
 #include "IC_Dash.h"
+#include "IC_Can.h"
 
 
 
-// bool ConstructorStopRunningMoreThanOncePlease = false; // I for the life of me do not know why. I have tried various ways to fix it but my brain smooth.
 
 
-IC_Dash::IC_Dash()
+IC_Dash::IC_Dash(uint16_t _rpm_ = 0, uint8_t _gear_ = 0, uint8_t _indi_ = 0)
 {
-    // if (!ConstructorStopRunningMoreThanOncePlease)
-    // {
-    //     pinMode(LOWV_EN, OUTPUT);
-    //     pinMode(GEAR_EN, OUTPUT);
+     this->rpm =  _rpm_;
+    this->gear = _gear_;
+    this->indi = _indi_;
 
-    //     pinMode(BCD_A, OUTPUT);
-    //     pinMode(BCD_B, OUTPUT);
-    //     pinMode(BCD_C, OUTPUT);
-    //     pinMode(BCD_D, OUTPUT);
-
-    //     digitalWrite(LOWV_EN, HIGH);
-
-    //     delayMicroseconds(500);
-
-    //     ConstructorStopRunningMoreThanOncePlease = true;
-    // }
-
-    pinMode(LOWV_EN, OUTPUT);
-    pinMode(GEAR_EN, OUTPUT);
-
-    pinMode(BCD_A, OUTPUT);
-    pinMode(BCD_B, OUTPUT);
-    pinMode(BCD_C, OUTPUT);
-    pinMode(BCD_D, OUTPUT);
-
-    digitalWrite(LOWV_EN, HIGH);
-
-    delayMicroseconds(500);
+    Serial.println("Initializing DASH..");
 }
 
 IC_Dash::~IC_Dash()
@@ -47,18 +24,20 @@ IC_Dash::~IC_Dash()
 
 void IC_Dash::initDashLEDs()
 {
-    FastLED.addLeds<WS2812, TACH_DPIN, GRB>(this->tachLEDs, TACH_LEDS);
-    FastLED.addLeds<WS2812, INDI_DPIN, GRB>(this->indiLEDs, INDI_LEDS);
-    FastLED.setMaxPowerInVoltsAndMilliamps(5, 500);
-    FastLED.setBrightness(1);
+    tachLEDs_.addLeds<WS2812, TACH_DPIN, GRB>(this->tachLEDs, TACH_LEDS);
+    indiLEDs_.addLeds<WS2812, INDI_DPIN, GRB>(this->indiLEDs, INDI_LEDS);
+    tachLEDs_.setMaxPowerInVoltsAndMilliamps(5, 100);
+    indiLEDs_.setMaxPowerInVoltsAndMilliamps(5, 100);
+    tachLEDs_.setBrightness(10);
+    indiLEDs_.setBrightness(10);
 }
 
 
-void IC_Dash::handleTachometer(uint16_t rpm)
+void IC_Dash::handleTachometer(uint16_t _rpm_)
 {
     CRGB* leds = this->tachLEDs;
 
-    int height = map(rpm, 0, MAX_RPM, 0, TACH_LEDS + 1);
+    int height = map(_rpm_, 0, MAX_RPM, 0, TACH_LEDS + 1);
 
     fill_gradient(leds, TACH_LEDS - 1, CHSV(0, 255, 255), 0, CHSV(70, 255, 255), SHORTEST_HUES);
 
@@ -70,15 +49,15 @@ void IC_Dash::handleTachometer(uint16_t rpm)
         }
     }
 
-    FastLED.show();
+    tachLEDs_.show();
 }
 
-void IC_Dash::handleGear(uint8_t num)
+void IC_Dash::handleGear(uint8_t _num_)
 {
     digitalWrite(GEAR_EN, LOW);
     delayMicroseconds(100);
     
-    switch (num)
+    switch (_num_)
     {
     case 0:
         digitalWrite(BCD_A, LOW);
@@ -149,15 +128,50 @@ void IC_Dash::handleGear(uint8_t num)
     delayMicroseconds(100);
 }
 
-
-void IC_Dash::setRPM(uint16_t rpm_)
+void IC_Dash::handleIndicators(uint8_t _ind_)
 {
-    this->rpm = rpm_;
+    CRGB* leds = this->indiLEDs;
+
+    switch (_ind_)
+    {
+    case 0:
+        break;
+    case 1:
+        leds[0] = CRGB::Red;
+        break;
+    case 2:
+        leds[1] = CRGB::Red;
+        break;
+    case 3:
+        leds[2] = CRGB::Blue;
+        break;
+    case 4:
+        leds[3] = CRGB::Red;
+        break;
+    case 5:
+        leds[4] = CRGB::Red;
+        break;
+    default:
+        break;
+    }
+
+    indiLEDs_.show();    
 }
 
-void IC_Dash::setGEAR(uint8_t gear_)
+
+void IC_Dash::setRPM(uint16_t _rpm_)
 {
-    this->gear = gear_;
+    this->rpm = _rpm_;
+}
+
+void IC_Dash::setGEAR(uint8_t _gear_)
+{
+    this->gear = _gear_;
+}
+
+void IC_Dash::setINDI(uint8_t _indi_)
+{
+    this->indi = _indi_;
 }
 
 
@@ -169,4 +183,29 @@ uint16_t IC_Dash::getRPM()
 uint8_t IC_Dash::getGEAR()
 {
     return this->gear;
+}
+
+uint8_t IC_Dash::getINDI()
+{
+    return this->indi;
+}
+
+
+void initDash(IC_Dash* _ic_dash_)
+{
+    pinMode(LOWV_EN, OUTPUT);
+    pinMode(GEAR_EN, OUTPUT);
+
+    pinMode(BCD_A, OUTPUT);
+    pinMode(BCD_B, OUTPUT);
+    pinMode(BCD_C, OUTPUT);
+    pinMode(BCD_D, OUTPUT);
+
+    digitalWrite(LOWV_EN, HIGH);
+
+    delayMicroseconds(500);
+
+    _ic_dash_->initDashLEDs();
+
+    Serial.println("Starting DASH..");
 }

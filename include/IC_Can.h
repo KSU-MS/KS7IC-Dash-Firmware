@@ -24,13 +24,13 @@ public:
      IC_Can();
     ~IC_Can();
 
-    void read_Can(IC_Dash& dash_, uint8_t can = _IC_CAN_ORG_);
-    void write_Can(uint8_t can, CAN_message_t& msg);
+    void read_Can(IC_Dash* _ic_dash_, uint8_t _can_ = _IC_CAN_ORG_);
+    void write_Can(CAN_message_t& _msg_, uint8_t _can_ = _IC_CAN_DUP_);
 
 };
 
 
-static IC_Can* IC_Can_ = new IC_Can();
+// static IC_Can* IC_Can_ = new IC_Can();
 
 
 #endif
