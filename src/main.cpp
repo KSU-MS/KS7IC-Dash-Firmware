@@ -34,7 +34,7 @@ void loop()
 {
     // As of right now these are just demostrating the final output results
     // These will not be in final build. Loop is reserved for actually doing the shit lol
-    
+
     if (timer.check())
     {
         IC_Dash_->handleTachometer(rpm); // Testing tach and indi LEDs     
@@ -58,7 +58,7 @@ void loop()
 
         indi++;
 
-        if (indi > 5)
+        if (indi > 31)
         {
             indi = 0;
         }

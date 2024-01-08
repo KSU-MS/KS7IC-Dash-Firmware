@@ -31,7 +31,7 @@ public:
 
     void handleTachometer(uint16_t _rpm_);
     void handleGear(uint8_t _num_);
-    void handleIndicators(uint8_t _ind_);
+    void handleIndicators(uint8_t _indi_);
 
     void setRPM(uint16_t _rpm_);
     void setGEAR(uint8_t _gear_);
@@ -46,9 +46,10 @@ public:
 static CFastLED tachLEDs_;
 static CFastLED indiLEDs_;
 
+static IC_Dash* IC_Dash_;
+
 void initDash(IC_Dash* _ic_dash_);
 
-static IC_Dash* IC_Dash_;
 
 #endif
 

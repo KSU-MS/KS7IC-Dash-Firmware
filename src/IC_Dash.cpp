@@ -26,10 +26,10 @@ void IC_Dash::initDashLEDs()
 {
     tachLEDs_.addLeds<WS2812, TACH_DPIN, GRB>(this->tachLEDs, TACH_LEDS);
     indiLEDs_.addLeds<WS2812, INDI_DPIN, GRB>(this->indiLEDs, INDI_LEDS);
-    tachLEDs_.setMaxPowerInVoltsAndMilliamps(5, 100);
-    indiLEDs_.setMaxPowerInVoltsAndMilliamps(5, 100);
-    tachLEDs_.setBrightness(10);
-    indiLEDs_.setBrightness(10);
+    tachLEDs_.setMaxPowerInVoltsAndMilliamps(5, 200);
+    indiLEDs_.setMaxPowerInVoltsAndMilliamps(5, 200);
+    tachLEDs_.setBrightness(DASH_MAX_BRIGHTNESS);
+    indiLEDs_.setBrightness(DASH_MAX_BRIGHTNESS);
 }
 
 
@@ -133,35 +133,38 @@ void IC_Dash::handleGear(uint8_t _num_)
     delayMicroseconds(100);
 }
 
-void IC_Dash::handleIndicators(uint8_t _ind_)
+void IC_Dash::handleIndicators(uint8_t _indi_)
 {
-    // Working on optimizing this rn.
-    
     CRGB* leds = this->indiLEDs;
 
     fill_solid(leds, INDI_LEDS, CRGB::Black);
 
-    switch (_ind_)
+    for (int i = 0; i < INDI_LEDS; i++)
     {
-    case 0:
-        break;
-    case 1:
-        leds[0] = CRGB::Red;
-        break;
-    case 2:
-        leds[1] = CRGB::Red;
-        break;
-    case 3:
-        leds[2] = CRGB::Blue;
-        break;
-    case 4:
-        leds[3] = CRGB::Red;
-        break;
-    case 5:
-        leds[4] = CRGB::Red;
-        break;
-    default:
-        break;
+        uint8_t mask = 1 << i;
+
+        switch (_indi_ & mask)
+        {
+        case _IC_NO_STATUS_:
+            break;
+        case _IC_OIL_PRESSURE_:
+            leds[0] = CRGB::Red;
+            break;
+        case _IC_OIL_TEMP_:
+            leds[1] = CRGB::Red;
+            break;
+        case _IC_LAUNCH_CONTROL_:
+            leds[2] = CRGB::Blue;
+            break;
+        case _IC_COOLANT_TEMP_:
+            leds[3] = CRGB::Red;
+            break;
+        case _IC_CHECK_ENG_:
+            leds[4] = CRGB::Orange;
+            break;
+        default:
+            break;
+        }
     }
 
     indiLEDs_.show();    
