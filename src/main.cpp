@@ -10,7 +10,7 @@ uint16_t rpm = 0;
 uint8_t gear = 0;
 uint8_t stat = 0;
 
-Metro tach_ = Metro(5);
+Metro tach_ = Metro(1);
 Metro gear_ = Metro(1000);
 Metro stat_ = Metro(1000);
 
@@ -37,12 +37,19 @@ void loop()
 
     if (tach_.check())
     {
-        // IC_Dash_->handleDashTachometer(rpm); // Testing tach and indi LEDs     
+        IC_Dash_->handleTachometer(rpm); // Testing tach and indi LEDs
+
+        rpm++;
+
+        if (rpm >= MAX_RPM)
+        {
+            rpm = 0;
+        }     
     }
 
     if (gear_.check())
     {
-        IC_Dash_->handleDashGear(gear);
+        IC_Dash_->handleGear(gear);
 
         gear++;
 
@@ -54,7 +61,7 @@ void loop()
 
     if (stat_.check())
     {
-        IC_Dash_->handleDashStatus(stat);
+        IC_Dash_->handleStatus(stat);
 
         stat++;
 
@@ -62,12 +69,5 @@ void loop()
         {
             stat = 0;
         }
-    }
-
-    rpm++;
-
-    if (rpm >= MAX_RPM)
-    {
-        rpm = 0;
     }
 }

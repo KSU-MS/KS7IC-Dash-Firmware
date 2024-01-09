@@ -7,36 +7,21 @@
 IC_Can::IC_Can()
 {
     this->IC_CAN_ORG.begin();
-    this->IC_CAN_ORG.setBaudRate(500000);
-    this->IC_CAN_ORG.setMaxMB(NUM_TX_MAILBOXES + NUM_RX_MAILBOXES);
+    this->IC_CAN_DUP.begin();
 
-    for (int i = 0; i < (NUM_RX_MAILBOXES - 1); i++)
-    {
-        this->IC_CAN_ORG.setMB((FLEXCAN_MAILBOX)i, RX, STD);
-    }
+    this->IC_CAN_ORG.setBaudRate(CAN_BAUD_RATE);
+    this->IC_CAN_DUP.setBaudRate(CAN_BAUD_RATE);
 
-    for (int i = NUM_RX_MAILBOXES; i < (NUM_TX_MAILBOXES + NUM_RX_MAILBOXES); i++)
+    this->IC_CAN_ORG.setMaxMB(NUM_RXTX_MAILBOXES);
+    this->IC_CAN_DUP.setMaxMB(NUM_RXTX_MAILBOXES);
+
+    for (uint8_t BOX = 0; BOX < NUM_RXTX_MAILBOXES; BOX++)
     {
-        this->IC_CAN_ORG.setMB((FLEXCAN_MAILBOX)i, TX, STD);
+        this->IC_CAN_ORG.setMB((FLEXCAN_MAILBOX)BOX, RX, STD);
+        this->IC_CAN_DUP.setMB((FLEXCAN_MAILBOX)BOX, TX, STD);
     }
 
     // this->IC_CAN_ORG.mailboxStatus();
-
-
-    this->IC_CAN_DUP.begin();
-    this->IC_CAN_DUP.setBaudRate(500000);
-    this->IC_CAN_DUP.setMaxMB(NUM_TX_MAILBOXES + NUM_RX_MAILBOXES);
-
-    for (int i = 0; i < NUM_RX_MAILBOXES; i++)
-    {
-        this->IC_CAN_DUP.setMB((FLEXCAN_MAILBOX)i, RX, STD);
-    }
-
-    for (int i = NUM_RX_MAILBOXES; i < (NUM_TX_MAILBOXES + NUM_RX_MAILBOXES); i++)
-    {
-        this->IC_CAN_DUP.setMB((FLEXCAN_MAILBOX)i, TX, STD);
-    }
-
     // this->IC_CAN_DUP.mailboxStatus();
 
     Serial.println("Initializing CAN..");

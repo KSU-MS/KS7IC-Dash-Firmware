@@ -28,10 +28,11 @@ public:
     ~IC_Dash();
 
     void initDashLEDs();
+    void Yippie();
 
-    void handleDashTachometer(uint16_t _rpm_);
-    void handleDashGear(uint8_t _num_);
-    void handleDashStatus(uint8_t _status_);
+    void handleTachometer(uint16_t _rpm_);
+    void handleGear(uint8_t _num_);
+    void handleStatus(uint8_t _status_);
 
     void setRPM(uint16_t _rpm_);
     void setGEAR(uint8_t _gear_);
@@ -44,7 +45,7 @@ public:
 
 
 static CFastLED tachLEDs_;
-static CFastLED indiLEDs_;
+static CFastLED statLEDs_;
 
 static IC_Dash* IC_Dash_;
 

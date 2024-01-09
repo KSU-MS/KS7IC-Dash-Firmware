@@ -25,15 +25,17 @@ IC_Dash::~IC_Dash()
 void IC_Dash::initDashLEDs()
 {
     tachLEDs_.addLeds<WS2812, TACH_DPIN, GRB>(this->tachLEDs, TACH_LEDS);
-    indiLEDs_.addLeds<WS2812, INDI_DPIN, GRB>(this->statLEDs, STAT_LEDS);
+    statLEDs_.addLeds<WS2812, INDI_DPIN, GRB>(this->statLEDs, STAT_LEDS);
     tachLEDs_.setMaxPowerInVoltsAndMilliamps(5, 200);
-    indiLEDs_.setMaxPowerInVoltsAndMilliamps(5, 200);
+    statLEDs_.setMaxPowerInVoltsAndMilliamps(5, 200);
     tachLEDs_.setBrightness(LED_MAX_BRIGHTNESS);
-    indiLEDs_.setBrightness(LED_MAX_BRIGHTNESS);
+    statLEDs_.setBrightness(LED_MAX_BRIGHTNESS);
+    tachLEDs_.setMaxRefreshRate(LED_MAX_REFRESHRATE);
+    statLEDs_.setMaxRefreshRate(LED_MAX_REFRESHRATE);
 }
 
 
-void IC_Dash::handleDashTachometer(uint16_t _rpm_)
+void IC_Dash::handleTachometer(uint16_t _rpm_)
 {
     CRGB* leds = this->tachLEDs;
 
@@ -52,7 +54,7 @@ void IC_Dash::handleDashTachometer(uint16_t _rpm_)
     tachLEDs_.show();
 }
 
-void IC_Dash::handleDashGear(uint8_t _num_)
+void IC_Dash::handleGear(uint8_t _num_)
 {
     digitalWrite(GEAR_EN, LOW);
     delayMicroseconds(100);
@@ -133,7 +135,7 @@ void IC_Dash::handleDashGear(uint8_t _num_)
     delayMicroseconds(100);
 }
 
-void IC_Dash::handleDashStatus(uint8_t _status_)
+void IC_Dash::handleStatus(uint8_t _status_)
 {
     CRGB* leds = this->statLEDs;
 
@@ -169,7 +171,7 @@ void IC_Dash::handleDashStatus(uint8_t _status_)
         }
     }
 
-    indiLEDs_.show();    
+    statLEDs_.show();    
 }
 
 

@@ -14,12 +14,13 @@
 #define          TACH_LEDS           15
 #define          STAT_LEDS            5
 
-#define      LED_MAX_BRIGHTNESS      20
+#define      LED_MAX_BRIGHTNESS      10
+#define      LED_MAX_REFRESHRATE    500
 
 #define          TACH_DPIN           25
 #define          INDI_DPIN           26
 
-#define           MAX_RPM          4096
+#define           MAX_RPM         12000
 
 #define        _IC_CAN_NONE_          0
 #define       _IC_CAN_READY_          1
@@ -38,8 +39,8 @@
 #define     _IC_COOLANT_TEMP_         8
 #define      _IC_CHECK_ENG_          16
 
-#define      NUM_TX_MAILBOXES         2
-#define      NUM_RX_MAILBOXES         6
+#define     NUM_RXTX_MAILBOXES        8 // 2
+#define       CAN_BAUD_RATE      500000
 
 
 #endif
