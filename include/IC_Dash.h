@@ -27,7 +27,7 @@ public:
      IC_Dash(uint16_t _rpm_ = 0, uint8_t _gear_ = 0, uint8_t _status_ = 0);
     ~IC_Dash();
 
-    void initDashLEDs();
+    void initLEDs();
     void Yippie();
 
     void handleTachometer(uint16_t _rpm_);

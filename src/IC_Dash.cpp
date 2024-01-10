@@ -22,7 +22,7 @@ IC_Dash::~IC_Dash()
 }
 
 
-void IC_Dash::initDashLEDs()
+void IC_Dash::initLEDs()
 {
     tachLEDs_.addLeds<WS2812, TACH_DPIN, GRB>(this->tachLEDs, TACH_LEDS);
     statLEDs_.addLeds<WS2812, INDI_DPIN, GRB>(this->statLEDs, STAT_LEDS);
@@ -235,7 +235,8 @@ void initDash(IC_Dash* _ic_dash_)
 
     delayMicroseconds(LOWV_STATE_DELAY);
 
-    _ic_dash_->initDashLEDs();
+    _ic_dash_->initLEDs();
 
     Serial.println("Starting DASH..");
 }
+

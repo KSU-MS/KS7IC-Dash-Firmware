@@ -3,6 +3,8 @@
 #define IC_DASH_UTILS.H
 
 
+#define       LOWV_STATE_DELAY      100
+
 #define           LOWV_EN            23
 #define           GEAR_EN            27
 
