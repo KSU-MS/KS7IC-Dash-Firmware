@@ -34,6 +34,13 @@ void IC_Dash::initDashLEDs()
     statLEDs_.setMaxRefreshRate(LED_MAX_REFRESHRATE);
 }
 
+void IC_Dash::Yippie()
+{
+    CRGB* leds = this->tachLEDs;
+
+    fill_solid(leds, TACH_LEDS, CRGB::Green);
+}
+
 
 void IC_Dash::handleTachometer(uint16_t _rpm_)
 {
@@ -57,7 +64,7 @@ void IC_Dash::handleTachometer(uint16_t _rpm_)
 void IC_Dash::handleGear(uint8_t _num_)
 {
     digitalWrite(GEAR_EN, LOW);
-    delayMicroseconds(100);
+    delayMicroseconds(LOWV_STATE_DELAY);
 
     // I wish I could directly manipulate the ports because
     // it would make this so much simpler but I picked pins 
@@ -130,9 +137,9 @@ void IC_Dash::handleGear(uint8_t _num_)
         break;
     }
 
-    delayMicroseconds(100);
+    delayMicroseconds(LOWV_STATE_DELAY);
     digitalWrite(GEAR_EN, HIGH);
-    delayMicroseconds(100);
+    delayMicroseconds(LOWV_STATE_DELAY);
 }
 
 void IC_Dash::handleStatus(uint8_t _status_)
@@ -219,7 +226,14 @@ void initDash(IC_Dash* _ic_dash_)
 
     digitalWrite(LOWV_EN, HIGH);
 
-    delayMicroseconds(500);
+    delayMicroseconds(LOWV_STATE_DELAY);
+
+    digitalWrite(BCD_A, HIGH);
+    digitalWrite(BCD_B, HIGH);
+    digitalWrite(BCD_C, HIGH);
+    digitalWrite(BCD_D, HIGH);
+
+    delayMicroseconds(LOWV_STATE_DELAY);
 
     _ic_dash_->initDashLEDs();
 
