@@ -3,8 +3,6 @@
 #define IC_DASH_UTILS.H
 
 
-#define       LOWV_STATE_DELAY      100
-
 #define           LOWV_EN            23
 #define           GEAR_EN            27
 
@@ -16,13 +14,13 @@
 #define          TACH_LEDS           15
 #define          STAT_LEDS            5
 
-#define      LED_MAX_BRIGHTNESS      10
-#define      LED_MAX_REFRESHRATE    500
+#define      LED_MAX_BRIGHTNESS      20
+#define     LED_MAX_REFRESHRATE     144
 
 #define          TACH_DPIN           25
 #define          INDI_DPIN           26
 
-#define           MAX_RPM         12000
+#define           MAX_RPM          4096
 
 #define        _IC_CAN_NONE_          0
 #define       _IC_CAN_READY_          1
@@ -41,8 +39,8 @@
 #define     _IC_COOLANT_TEMP_         8
 #define      _IC_CHECK_ENG_          16
 
-#define     NUM_RXTX_MAILBOXES        8 // 2
-#define       CAN_BAUD_RATE      500000
+#define      NUM_TX_MAILBOXES         2
+#define      NUM_RX_MAILBOXES         6
 
 
 #endif
