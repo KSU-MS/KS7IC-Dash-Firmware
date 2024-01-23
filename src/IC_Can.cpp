@@ -38,6 +38,8 @@ void IC_Can::read_Can(IC_Dash* _ic_dash_, uint8_t _can_ = _IC_CAN_ORG_)
     // Would like to see if using a switch case versus
     // an if block is better at catching CAN frames.
 
+    // After testing I think this is better ngl
+
     CAN_message_t _msg_;
 
     switch (this->IC_CAN_ORG.read(_msg_))
@@ -49,12 +51,15 @@ void IC_Can::read_Can(IC_Dash* _ic_dash_, uint8_t _can_ = _IC_CAN_ORG_)
         {
         case _IC_CAN_MSG_GROUP_0_:
             _ic_dash_->setRPM(_msg_.buf);
+            //_ic_dash_->blinkStatusLed();
+
             break;
         case _IC_CAN_MSG_GROUP_33_:
             _ic_dash_->setGEAR(_msg_.buf[6]);
+            _ic_dash_->blinkStatusLed();
             break;
         case _IC_CAN_MSG_GROUP_2_:
-            _ic_dash_->setSTATUS(_msg_.buf[0]);
+            // _ic_dash_->setSTATUS(_msg_.buf[0]);
             break;        
         default:
             break;

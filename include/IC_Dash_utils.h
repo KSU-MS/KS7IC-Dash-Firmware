@@ -14,6 +14,8 @@
 #define          TACH_LEDS            15
 #define          STAT_LEDS            5
 
+#define          STATUS_LED           2     
+
 #define      LED_MAX_BRIGHTNESS       20
 #define     LED_MAX_REFRESHRATE       144
 
@@ -39,11 +41,17 @@
 #define      _IC_COOLANT_TEMP_        8
 #define       _IC_CHECK_ENG_          16
 
-#define       NUM_TX_MAILBOXES        2
-#define       NUM_RX_MAILBOXES        6
+#define       NUM_RXTX_MAILBOXES      8
+
+#define         CAN_BAUD_RATE         250000
 
 #define     _IC_CAN_MSG_GROUP_0_      0x5F0
 #define     _IC_CAN_MSG_GROUP_2_      0x5F2
 #define     _IC_CAN_MSG_GROUP_3_      0x5F3
 #define     _IC_CAN_MSG_GROUP_33_     0x611
+
+
+
+#endif
+
 

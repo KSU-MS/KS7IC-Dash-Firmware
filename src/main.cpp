@@ -15,6 +15,9 @@ Metro gear_ = Metro(1000);
 Metro stat_ = Metro(1000);
 
 
+// CAN_message_t msg;
+
+// uint8_t dat[8] = {0, 1, 2, 3, 4, 5, 6, 7};
 
 
 void setup()
@@ -27,6 +30,15 @@ void setup()
      IC_Can_ = new  IC_Can();
 
     initDash(IC_Dash_);
+
+    IC_Dash_->blinkStatusLed();
+
+    // msg.id = _IC_CAN_MSG_GROUP_0_;
+    
+    // for (uint8_t i = 0; i < 8; i++)
+    // {
+
+    // }
 }
 
 
@@ -35,39 +47,7 @@ void loop()
     // As of right now these are just demostrating the final output results
     // These will not be in final build. Loop is reserved for actually doing the shit lol
 
-    if (tach_.check())
-    {
-        IC_Dash_->handleTachometer(rpm); // Testing tach and indi LEDs
+    IC_Can_->read_Can(IC_Dash_);
 
-        rpm++;
 
-        if (rpm >= MAX_RPM)
-        {
-            rpm = 0;
-        }     
-    }
-
-    if (gear_.check())
-    {
-        IC_Dash_->handleGear(gear);
-
-        gear++;
-
-        if (gear > 9)
-        {
-            gear = 0;
-        }
-    }
-
-    if (stat_.check())
-    {
-        IC_Dash_->handleStatus(stat);
-
-        stat++;
-
-        if (stat > 31)
-        {
-            stat = 0;
-        }
-    }
 }

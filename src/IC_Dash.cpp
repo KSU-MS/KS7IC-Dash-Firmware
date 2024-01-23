@@ -34,6 +34,13 @@ void IC_Dash::initLEDs()
     statLEDs_.setMaxRefreshRate(LED_MAX_REFRESHRATE);
 }
 
+void IC_Dash::blinkStatusLed()
+{
+    digitalWrite(STATUS_LED, HIGH);
+    delay(2000);
+    digitalWrite(STATUS_LED, LOW);
+}
+
 
 void IC_Dash::handleTachometer(uint16_t _rpm_)
 {
@@ -231,6 +238,8 @@ void initDash(IC_Dash* _ic_dash_)
     pinMode(BCD_B, OUTPUT);
     pinMode(BCD_C, OUTPUT);
     pinMode(BCD_D, OUTPUT);
+
+    pinMode(STATUS_LED, OUTPUT);
 
     digitalWrite(LOWV_EN, HIGH);
 
