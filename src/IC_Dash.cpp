@@ -175,9 +175,14 @@ void IC_Dash::handleStatus(uint8_t _status_)
 }
 
 
-void IC_Dash::setRPM(uint16_t _rpm_)
+void IC_Dash::setRPM(uint8_t* _rpm_)
 {
-    this->rpm = _rpm_;
+    uint16_t can_rpm = 0;
+
+    can_rpm |= (_rpm_[6] << 8);
+    can_rpm |= _rpm_[7];
+
+    this->rpm = can_rpm;
 }
 
 void IC_Dash::setGEAR(uint8_t _gear_)
@@ -185,9 +190,19 @@ void IC_Dash::setGEAR(uint8_t _gear_)
     this->gear = _gear_;
 }
 
-void IC_Dash::setSTATUS(uint8_t _status_)
+// void IC_Dash::setSTATUS(uint8_t _status_)
+// {
+//     this->status = _status_;
+// }
+
+void IC_Dash::setCoolantTemp(uint8_t* _coolantTemp_)
 {
-    this->status = _status_;
+    uint16_t can_coolantTemp = 0;
+
+    can_coolantTemp |= (_coolantTemp_[6] << 8);
+    can_coolantTemp |= _coolantTemp_[7];
+
+    this->coolantTemp = can_coolantTemp;
 }
 
 
@@ -201,10 +216,10 @@ uint8_t IC_Dash::getGEAR()
     return this->gear;
 }
 
-uint8_t IC_Dash::getSTATUS()
-{
-    return this->status;
-}
+// uint8_t IC_Dash::getSTATUS()
+// {
+//     return this->status;
+// }
 
 
 void initDash(IC_Dash* _ic_dash_)

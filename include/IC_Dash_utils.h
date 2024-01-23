@@ -43,6 +43,7 @@
 #define       NUM_RX_MAILBOXES        6
 
 #define     _IC_CAN_MSG_GROUP_0_      0x5F0
+#define     _IC_CAN_MSG_GROUP_2_      0x5F2
 #define     _IC_CAN_MSG_GROUP_3_      0x5F3
 #define     _IC_CAN_MSG_GROUP_33_     0x611
 

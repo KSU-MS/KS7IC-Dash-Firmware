@@ -22,6 +22,9 @@ private:
     uint8_t    gear;
     uint8_t  status;
 
+    uint16_t coolantTemp;
+    uint16_t     oilTemp;
+
 public:
 
      IC_Dash(uint16_t _rpm_ = 0, uint8_t _gear_ = 0, uint8_t _status_ = 0);
@@ -34,13 +37,14 @@ public:
     void handleGear(uint8_t _num_);
     void handleStatus(uint8_t _status_);
 
-    void setRPM(uint16_t _rpm_);
+    void setRPM(uint8_t* _rpm_);
     void setGEAR(uint8_t _gear_);
-    void setSTATUS(uint8_t _status_);
+    // void setSTATUS(uint8_t _status_);
+    void setCoolantTemp(uint8_t* _coolantTemp_);
 
     uint16_t getRPM();
     uint8_t getGEAR();
-    uint8_t getSTATUS();
+    // uint8_t getSTATUS();
 };
 
 
