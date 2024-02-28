@@ -32,6 +32,10 @@ void IC_Dash::initLEDs()
     statLEDs_.setBrightness(LED_MAX_BRIGHTNESS);
     tachLEDs_.setMaxRefreshRate(LED_MAX_REFRESHRATE);
     statLEDs_.setMaxRefreshRate(LED_MAX_REFRESHRATE);
+
+    // Turn on lights
+    fill_solid(this->statLEDs, STAT_LEDS, CRGB::Red);
+    this->statLEDs[2] = CRGB::Blue;
 }
 
 void IC_Dash::blinkStatusLed()
@@ -248,4 +252,7 @@ void initDash(IC_Dash* _ic_dash_)
     _ic_dash_->initLEDs();
 
     Serial.println("Starting DASH..");
+
+    tachLEDs_.show();
+    statLEDs_.show();
 }
