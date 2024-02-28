@@ -26,16 +26,19 @@ void IC_Dash::initLEDs()
 {
     tachLEDs_.addLeds<WS2812, TACH_DPIN, GRB>(this->tachLEDs, TACH_LEDS);
     statLEDs_.addLeds<WS2812, INDI_DPIN, GRB>(this->statLEDs, STAT_LEDS);
-    tachLEDs_.setMaxPowerInVoltsAndMilliamps(5, 200);
-    statLEDs_.setMaxPowerInVoltsAndMilliamps(5, 200);
+    //tachLEDs_.setMaxPowerInVoltsAndMilliamps(5, 200);
+    //statLEDs_.setMaxPowerInVoltsAndMilliamps(5, 200);
     tachLEDs_.setBrightness(LED_MAX_BRIGHTNESS);
     statLEDs_.setBrightness(LED_MAX_BRIGHTNESS);
-    tachLEDs_.setMaxRefreshRate(LED_MAX_REFRESHRATE);
-    statLEDs_.setMaxRefreshRate(LED_MAX_REFRESHRATE);
+    //tachLEDs_.setMaxRefreshRate(LED_MAX_REFRESHRATE);
+    //statLEDs_.setMaxRefreshRate(LED_MAX_REFRESHRATE);
 
     // Turn on lights
     fill_solid(this->statLEDs, STAT_LEDS, CRGB::Red);
     this->statLEDs[2] = CRGB::Blue;
+
+    //tachLEDs_.show();
+    statLEDs_.show();
 }
 
 void IC_Dash::blinkStatusLed()
@@ -252,7 +255,4 @@ void initDash(IC_Dash* _ic_dash_)
     _ic_dash_->initLEDs();
 
     Serial.println("Starting DASH..");
-
-    tachLEDs_.show();
-    statLEDs_.show();
 }

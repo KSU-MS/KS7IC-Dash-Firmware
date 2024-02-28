@@ -16,7 +16,7 @@
 
 #define          STATUS_LED           2     
 
-#define      LED_MAX_BRIGHTNESS       20
+#define      LED_MAX_BRIGHTNESS       50
 #define     LED_MAX_REFRESHRATE       144
 
 #define          TACH_DPIN            25
