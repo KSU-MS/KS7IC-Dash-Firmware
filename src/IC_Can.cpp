@@ -51,19 +51,23 @@ void IC_Can::read_Can(IC_Dash* _ic_dash_, uint8_t _can_ = _IC_CAN_ORG_)
         {
         case _IC_CAN_MSG_GROUP_0_:
             _ic_dash_->setRPM(_msg_.buf);
-            //_ic_dash_->blinkStatusLed();
-
+            break;
+        case _IC_CAN_MSG_GROUP_2_:
+            _ic_dash_->setCoolantTemp(_msg_.buf);
             break;
         case _IC_CAN_MSG_GROUP_33_:
             _ic_dash_->setGEAR(_msg_.buf[6]);
-            _ic_dash_->blinkStatusLed();
-            break;
-        case _IC_CAN_MSG_GROUP_2_:
-            // _ic_dash_->setSTATUS(_msg_.buf[0]);
             break;        
         default:
             break;
         }
+
+#if _DEBUG_
+
+        _ic_dash_->blinkStatusLed();
+
+#endif
+
         break;
     default:
         break;

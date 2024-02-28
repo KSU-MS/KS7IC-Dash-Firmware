@@ -3,6 +3,9 @@
 #define IC_DASH_UTILS.H
 
 
+#define           _DEBUG_             1
+
+
 #define           LOWV_EN             23
 #define           GEAR_EN             27
 

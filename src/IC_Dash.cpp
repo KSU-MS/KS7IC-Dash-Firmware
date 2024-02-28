@@ -37,16 +37,16 @@ void IC_Dash::initLEDs()
 void IC_Dash::blinkStatusLed()
 {
     digitalWrite(STATUS_LED, HIGH);
-    delay(2000);
+    delay(5);
     digitalWrite(STATUS_LED, LOW);
 }
 
 
-void IC_Dash::handleTachometer(uint16_t _rpm_)
+void IC_Dash::handleTachometer()
 {
     CRGB* leds = this->tachLEDs;
 
-    int height = map(_rpm_, 0, MAX_RPM, 0, TACH_LEDS + 1);
+    int height = map(this->rpm, 0, MAX_RPM, 0, TACH_LEDS + 1);
 
     fill_gradient(leds, TACH_LEDS - 1, CHSV(0, 255, 255), 0, CHSV(70, 255, 255), SHORTEST_HUES);
 
@@ -61,7 +61,7 @@ void IC_Dash::handleTachometer(uint16_t _rpm_)
     tachLEDs_.show();
 }
 
-void IC_Dash::handleGear(uint8_t _num_)
+void IC_Dash::handleGear()
 {
     digitalWrite(GEAR_EN, LOW);
     delayMicroseconds(100);
@@ -71,7 +71,7 @@ void IC_Dash::handleGear(uint8_t _num_)
     // that did not belong to an emulated port on the teensy. 
     // Something I need to take into consideration next time.
     
-    switch (_num_)
+    switch (this->gear)
     {
     case 0:
         digitalWrite(BCD_A, LOW);
