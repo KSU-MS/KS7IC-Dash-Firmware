@@ -22,7 +22,7 @@
 #define          TACH_DPIN            25
 #define          INDI_DPIN            26
 
-#define           MAX_RPM             4096
+#define           MAX_RPM             12000
 
 #define        _IC_CAN_NONE_          0
 #define       _IC_CAN_READY_          1

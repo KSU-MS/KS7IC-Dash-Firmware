@@ -49,5 +49,16 @@ void loop()
 
     IC_Can_->read_Can(IC_Dash_);
 
+    if (tach_.check())
+    {
+        IC_Dash_->handleTachometer(rpm);
+    }
+
+    rpm++;
+
+    if (rpm >= MAX_RPM)
+    {
+        rpm = 0;
+    }
 
 }
