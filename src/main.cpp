@@ -61,4 +61,5 @@ void loop()
         rpm = 0;
     }
 
+    Serial.print("feature/All-Lights-ON");
 }
