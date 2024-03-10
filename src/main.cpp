@@ -32,13 +32,6 @@ void setup()
     initDash(IC_Dash_);
 
     IC_Dash_->blinkStatusLed();
-
-    // msg.id = _IC_CAN_MSG_GROUP_0_;
-    
-    // for (uint8_t i = 0; i < 8; i++)
-    // {
-
-    // }
 }
 
 

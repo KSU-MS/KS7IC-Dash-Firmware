@@ -18,6 +18,7 @@ IC_Dash::IC_Dash(uint16_t _rpm_ = 0, uint8_t _gear_ = 0, uint8_t _status_ = 0)
 
 IC_Dash::~IC_Dash()
 {
+
     Serial.println("Bye Bye..");
 }
 
@@ -72,11 +73,6 @@ void IC_Dash::handleGear(uint8_t _num_)
 {
     digitalWrite(GEAR_EN, LOW);
     delayMicroseconds(100);
-
-    // I wish I could directly manipulate the ports because
-    // it would make this so much simpler but I picked pins 
-    // that did not belong to an emulated port on the teensy. 
-    // Something I need to take into consideration next time.
     
     switch (_num_)
     {
@@ -253,6 +249,8 @@ void initDash(IC_Dash* _ic_dash_)
     delayMicroseconds(500);
 
     _ic_dash_->initLEDs();
+
+    _ic_dash_->handleGear(0);
 
     Serial.println("Starting DASH..");
 }

@@ -32,7 +32,7 @@ public:
 
     void initLEDs();
     void Yippie();
-    void blinkStatusLed();
+    void blinkStatusLed(uint8_t error);
 
     void handleTachometer(uint16_t _rpm_);
     void handleGear(uint8_t _num_);
