@@ -15,9 +15,7 @@ Metro main_ = Metro(10);
 Metro  can_ = Metro(11);
 
 
-// CAN_message_t msg;
 
-// uint8_t dat[8] = {0, 1, 2, 3, 4, 5, 6, 7};
 
 
 void setup()

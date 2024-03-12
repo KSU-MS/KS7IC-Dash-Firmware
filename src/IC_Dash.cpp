@@ -34,6 +34,12 @@ void IC_Dash::initLEDs()
     statLEDs_.setMaxRefreshRate(LED_MAX_REFRESHRATE);
 }
 
+void IC_Dash::Yippie()
+{
+    CRGB* leds = this->tachLEDs;
+    
+}
+
 void IC_Dash::blinkStatusLed()
 {
     digitalWrite(STATUS_LED, HIGH);
@@ -66,76 +72,47 @@ void IC_Dash::handleGear()
     digitalWrite(GEAR_EN, LOW);
     delayMicroseconds(100);
 
-    // I wish I could directly manipulate the ports because
-    // it would make this so much simpler but I picked pins 
-    // that did not belong to an emulated port on the teensy. 
-    // Something I need to take into consideration next time.
+    // GPIO1 is a port on the teensy
+
+    GPIO1_PSR &= this->sevenSegNumPack[SEG_CLEAR];
+
+    GPIO1_PSR |= this->sevenSegNumPack[this->gear];
     
-    switch (this->gear)
-    {
-    case 0:
-        digitalWrite(BCD_A, LOW);
-        digitalWrite(BCD_B, LOW);
-        digitalWrite(BCD_C, LOW);
-        digitalWrite(BCD_D, LOW);
-        break;
-    case 1:
-        digitalWrite(BCD_A, HIGH);
-        digitalWrite(BCD_B, LOW);
-        digitalWrite(BCD_C, LOW);
-        digitalWrite(BCD_D, LOW);
-        break;
-    case 2:
-        digitalWrite(BCD_A, LOW);
-        digitalWrite(BCD_B, HIGH);
-        digitalWrite(BCD_C, LOW);
-        digitalWrite(BCD_D, LOW);
-        break;
-    case 3:
-        digitalWrite(BCD_A, HIGH);
-        digitalWrite(BCD_B, HIGH);
-        digitalWrite(BCD_C, LOW);
-        digitalWrite(BCD_D, LOW);
-        break;
-    case 4:
-        digitalWrite(BCD_A, LOW);
-        digitalWrite(BCD_B, LOW);
-        digitalWrite(BCD_C, HIGH);
-        digitalWrite(BCD_D, LOW);
-        break;
-    case 5:
-        digitalWrite(BCD_A, HIGH);
-        digitalWrite(BCD_B, LOW);
-        digitalWrite(BCD_C, HIGH);
-        digitalWrite(BCD_D, LOW);
-        break;
-    case 6:
-        digitalWrite(BCD_A, LOW);
-        digitalWrite(BCD_B, HIGH);
-        digitalWrite(BCD_C, HIGH);
-        digitalWrite(BCD_D, LOW);
-        break;
-    case 7:
-        digitalWrite(BCD_A, HIGH);
-        digitalWrite(BCD_B, HIGH);
-        digitalWrite(BCD_C, HIGH);
-        digitalWrite(BCD_D, LOW);
-        break;
-    case 8:
-        digitalWrite(BCD_A, LOW);
-        digitalWrite(BCD_B, LOW);
-        digitalWrite(BCD_C, LOW);
-        digitalWrite(BCD_D, HIGH);
-        break;
-    case 9:
-        digitalWrite(BCD_A, HIGH);
-        digitalWrite(BCD_B, LOW);
-        digitalWrite(BCD_C, LOW);
-        digitalWrite(BCD_D, HIGH);
-        break;
-    default:
-        break;
-    }
+    // switch (this->gear)
+    // {
+    // case 0:
+    //     GPIO1_PSR |= ;
+    //     break;
+    // case 1:
+    //     GPIO1_PSR |= ;
+    //     break;
+    // case 2:
+    //     GPIO1_PSR |= ;
+    //     break;
+    // case 3:
+    //     GPIO1_PSR |= ;
+    //     break;
+    // case 4:
+    //     GPIO1_PSR |= ;
+    //     break;
+    // case 5:
+    //     GPIO1_PSR |= ;
+    //     break;
+    // case 6:
+    //     GPIO1_PSR |= ;
+    //     break;
+    // case 7:
+    //     GPIO1_PSR |= ;
+    //     break;
+    // case 8:
+    //     GPIO1_PSR |= ;
+    //     break;
+    // case 9:
+    //     GPIO1_PSR |= ;
+    //     break;
+    // default:
+    //     break;
+    // }
 
     delayMicroseconds(100);
     digitalWrite(GEAR_EN, HIGH);
