@@ -15,6 +15,8 @@ class IC_Dash
 {
 private:
 
+    const char Yippie_[12] = "Y i p p i e";
+
     CRGB tachLEDs[TACH_LEDS] = {CRGB::Black};
     CRGB statLEDs[STAT_LEDS] = {CRGB::Black};
 

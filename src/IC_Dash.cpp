@@ -36,8 +36,11 @@ void IC_Dash::initLEDs()
 
 void IC_Dash::Yippie()
 {
-    CRGB* leds = this->tachLEDs;
-    
+    CRGB*  leds_on = this->tachLEDs;
+    CRGB* leds_off = this->tachLEDs;
+
+    fill_solid(leds_on, TACH_LEDS, CRGB::Red);
+           
 }
 
 void IC_Dash::blinkStatusLed()
