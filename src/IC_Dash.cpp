@@ -7,11 +7,17 @@
 
 
 
-IC_Dash::IC_Dash(uint16_t _rpm_ = 0, uint8_t _gear_ = 0, uint8_t _status_ = 0)
+IC_Dash::IC_Dash(uint16_t _rpm_ = 0, uint8_t _gear_ = 0, uint8_t _status_ = 0,
+                 uint16_t _coolantTemp_ = 0, uint16_t _oilTemp_ = 0, uint16_t _engineTemp_ = 0)
 {
-       this->rpm =    _rpm_;
-      this->gear =   _gear_;
-    this->status = _status_;
+    this->DashGuy_->gear =   _gear_;
+    this->DashGuy_->rpm  =    _rpm_;
+
+    this->DashGuy_->coolantTemp = _coolantTemp_;
+    this->DashGuy_->oilTemp     =     _oilTemp_;
+    this->DashGuy_->engineTemp  =  _engineTemp_;
+    
+    // this->status        = _status_;
 
     Serial.println("Initializing DASH..");
 }
@@ -55,7 +61,7 @@ void IC_Dash::handleTachometer()
 {
     CRGB* leds = this->tachLEDs;
 
-    int height = map(this->rpm, 0, MAX_RPM, 0, TACH_LEDS + 1);
+    int height = map(this->DashGuy_->rpm, 0, MAX_RPM, 0, TACH_LEDS + 1);
 
     fill_gradient(leds, TACH_LEDS - 1, CHSV(0, 255, 255), 0, CHSV(70, 255, 255), SHORTEST_HUES);
 
@@ -76,47 +82,9 @@ void IC_Dash::handleGear()
     delayMicroseconds(100);
 
     // GPIO1 is a port on the teensy
-
-    GPIO1_PSR &= this->sevenSegNumPack[SEG_CLEAR];
-
-    GPIO1_PSR |= this->sevenSegNumPack[this->gear];
+    GPIO1_PSR &= this->DashGuy_->sevenSegNumPack[SEG_CLEAR];
+    GPIO1_PSR |= this->DashGuy_->sevenSegNumPack[this->DashGuy_->gear];
     
-    // switch (this->gear)
-    // {
-    // case 0:
-    //     GPIO1_PSR |= ;
-    //     break;
-    // case 1:
-    //     GPIO1_PSR |= ;
-    //     break;
-    // case 2:
-    //     GPIO1_PSR |= ;
-    //     break;
-    // case 3:
-    //     GPIO1_PSR |= ;
-    //     break;
-    // case 4:
-    //     GPIO1_PSR |= ;
-    //     break;
-    // case 5:
-    //     GPIO1_PSR |= ;
-    //     break;
-    // case 6:
-    //     GPIO1_PSR |= ;
-    //     break;
-    // case 7:
-    //     GPIO1_PSR |= ;
-    //     break;
-    // case 8:
-    //     GPIO1_PSR |= ;
-    //     break;
-    // case 9:
-    //     GPIO1_PSR |= ;
-    //     break;
-    // default:
-    //     break;
-    // }
-
     delayMicroseconds(100);
     digitalWrite(GEAR_EN, HIGH);
     delayMicroseconds(100);
@@ -167,14 +135,14 @@ void IC_Dash::setRPM(uint8_t* _rpm_)
     uint16_t can_rpm = 0;
 
     can_rpm |= (_rpm_[6] << 8);
-    can_rpm |= _rpm_[7];
+    can_rpm |= (_rpm_[7]);
 
-    this->rpm = can_rpm;
+    this->DashGuy_->rpm = can_rpm;
 }
 
 void IC_Dash::setGEAR(uint8_t _gear_)
 {
-    this->gear = _gear_;
+    this->DashGuy_->gear = _gear_;
 }
 
 // void IC_Dash::setSTATUS(uint8_t _status_)
@@ -187,20 +155,20 @@ void IC_Dash::setCoolantTemp(uint8_t* _coolantTemp_)
     uint16_t can_coolantTemp = 0;
 
     can_coolantTemp |= (_coolantTemp_[6] << 8);
-    can_coolantTemp |= _coolantTemp_[7];
+    can_coolantTemp |= (_coolantTemp_[7]);
 
-    this->coolantTemp = can_coolantTemp;
+    this->DashGuy_->coolantTemp = can_coolantTemp;
 }
 
 
 uint16_t IC_Dash::getRPM()
 {
-    return this->rpm;
+    return this->DashGuy_->rpm;
 }
 
 uint8_t IC_Dash::getGEAR()
 {
-    return this->gear;
+    return this->DashGuy_->gear;
 }
 
 // uint8_t IC_Dash::getSTATUS()
