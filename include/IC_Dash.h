@@ -9,6 +9,7 @@
 #include "IC_Dash_utils.h"
 
 
+// Helper for Dash data
 typedef struct IC_DashGuy
 {
     // The port is 32 bits :( so I gotta
@@ -26,8 +27,7 @@ typedef struct IC_DashGuy
 } IC_DashGuy;
 
 
-// BABABOOEY
-
+// BAABAA-BOOEY
 class IC_Dash
 {
 private:
@@ -46,7 +46,7 @@ public:
 
      IC_Dash(uint16_t _rpm_ = 0, uint8_t _gear_ = 0, uint8_t _status_ = 0,
              uint16_t _coolantTemp_ = 0, uint16_t _oilTemp_ = 0, uint16_t _engineTemp_ = 0);
-             
+
     ~IC_Dash();
 
     void initLEDs();
@@ -57,10 +57,10 @@ public:
     void handleGear();
     void handleStatus(uint8_t _status_);
 
-    void setRPM(uint8_t* _rpm_);
+    void setRPM(uint8_t* _buf_);
     void setGEAR(uint8_t _gear_);
     // void setSTATUS(uint8_t _status_);
-    void setCoolantTemp(uint8_t* _coolantTemp_);
+    void setCoolantTemp(uint8_t* _buf_);
 
     uint16_t getRPM();
     uint8_t getGEAR();
@@ -71,7 +71,7 @@ public:
 static CFastLED tachLEDs_;
 static CFastLED statLEDs_;
 
-static IC_Dash* IC_Dash_;
+static IC_Dash*  IC_Dash_;
 
 void initDash(IC_Dash* _ic_dash_);
 

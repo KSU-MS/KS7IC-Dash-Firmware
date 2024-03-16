@@ -12,12 +12,11 @@ IC_Dash::IC_Dash(uint16_t _rpm_ = 0, uint8_t _gear_ = 0, uint8_t _status_ = 0,
 {
     this->DashGuy_->gear =   _gear_;
     this->DashGuy_->rpm  =    _rpm_;
+    // this->status         = _status_;
 
     this->DashGuy_->coolantTemp = _coolantTemp_;
     this->DashGuy_->oilTemp     =     _oilTemp_;
     this->DashGuy_->engineTemp  =  _engineTemp_;
-    
-    // this->status        = _status_;
 
     Serial.println("Initializing DASH..");
 }
@@ -130,12 +129,12 @@ void IC_Dash::handleStatus(uint8_t _status_)
 }
 
 
-void IC_Dash::setRPM(uint8_t* _rpm_)
+void IC_Dash::setRPM(uint8_t* _buf_)
 {
     uint16_t can_rpm = 0;
 
-    can_rpm |= (_rpm_[6] << 8);
-    can_rpm |= (_rpm_[7]);
+    can_rpm |= (_buf_[6] << 8);
+    can_rpm |= (_buf_[7]);
 
     this->DashGuy_->rpm = can_rpm;
 }
@@ -150,12 +149,12 @@ void IC_Dash::setGEAR(uint8_t _gear_)
 //     this->status = _status_;
 // }
 
-void IC_Dash::setCoolantTemp(uint8_t* _coolantTemp_)
+void IC_Dash::setCoolantTemp(uint8_t* _buf_)
 {
     uint16_t can_coolantTemp = 0;
 
-    can_coolantTemp |= (_coolantTemp_[6] << 8);
-    can_coolantTemp |= (_coolantTemp_[7]);
+    can_coolantTemp |= (_buf_[6] << 8);
+    can_coolantTemp |= (_buf_[7]);
 
     this->DashGuy_->coolantTemp = can_coolantTemp;
 }
