@@ -10,7 +10,7 @@ uint16_t rpm = 0;
 uint8_t gear = 0;
 uint8_t stat = 0;
 
-Metro gear_ = Metro(100);
+Metro gear_ = Metro(1000);
 Metro main_ = Metro(10);
 Metro  can_ = Metro(11);
 
@@ -22,10 +22,10 @@ void setup()
 {
     Serial.begin(9600);
 
-    // while(!Serial); // Wait for serial connection before proceeding
+    //while(!Serial); // Wait for serial connection before proceeding
 
     IC_Dash_ = new IC_Dash();
-     IC_Can_ = new  IC_Can();
+    //IC_Can_ = new  IC_Can();
 
     initDash(IC_Dash_);
 }
@@ -33,21 +33,37 @@ void setup()
 
 void loop()
 {
+    // IC_Dash_->setGEAR(gear);
+    // IC_Dash_->handleGear();
+
+    gear++;
+
     // As of right now these are just demostrating the final output results
     // These will not be in final build. Loop is reserved for actually doing the shit lol
 
-    if (can_.check())
-    {
-        IC_Can_->read_Can(IC_Dash_);
-    }
+    // if (can_.check())
+    // {
+    //     IC_Can_->read_Can(IC_Dash_);
+    // }
     
-    if (main_.check())
+    // if (main_.check())
+    // {
+    //     IC_Dash_->handleTachometer();
+    // }
+
+    // if (gear_.check())
+    // {
+    //     IC_Dash_->setGEAR(gear);
+    //     IC_Dash_->handleGear();
+    // }
+
+    if (gear >= 9)
     {
-        IC_Dash_->handleTachometer();
+        gear = 0;
     }
 
-    if (gear_.check())
-    {
-        IC_Dash_->handleGear();
-    }
+    Serial.println(gear);
+
+    delay(1000);
+
 }

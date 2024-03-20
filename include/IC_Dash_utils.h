@@ -15,7 +15,6 @@
 #define            BCD_D              41
 
 
-
 // Trying to see if this will work for the Seven Seg 
 
 #define          SEG_NUM_C            0xCFCFFFFF
@@ -29,6 +28,7 @@
 #define          SEG_NUM_7            0x30100000
 #define          SEG_NUM_8            0x00200000
 #define          SEG_NUM_9            0x10200000
+
 
 #define          SEG_CLEAR            10
 
@@ -60,7 +60,7 @@
 #define        _IC_OIL_TEMP_          2
 #define     _IC_LAUNCH_CONTROL_       4
 #define      _IC_COOLANT_TEMP_        8
-#define       _IC_CHECK_ENG_          16
+#define        _IC_CHECK_ENG_         16
 
 #define       NUM_RXTX_MAILBOXES      8
 

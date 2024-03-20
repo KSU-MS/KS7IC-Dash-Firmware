@@ -192,7 +192,7 @@ void initDash(IC_Dash* _ic_dash_)
 
     delayMicroseconds(500);
 
-    _ic_dash_->initLEDs();
+    //_ic_dash_->initLEDs();
 
     Serial.println("Starting DASH..");
 }
