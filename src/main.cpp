@@ -10,9 +10,9 @@ uint16_t rpm = 0;
 uint8_t gear = 0;
 uint8_t stat = 0;
 
-Metro gear_ = Metro(1000);
-Metro main_ = Metro(10);
-Metro  can_ = Metro(11);
+// Metro gear_ = Metro(1000);
+// Metro main_ = Metro(10);
+// Metro  can_ = Metro(11);
 
 
 
