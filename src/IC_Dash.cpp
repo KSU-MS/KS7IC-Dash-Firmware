@@ -1,7 +1,7 @@
 
 
 #include "IC_Dash.h"
-#include "IC_Can.h"
+//#include "IC_Can.h"
 
 
 
@@ -10,13 +10,13 @@
 IC_Dash::IC_Dash(uint16_t _rpm_ = 0, uint8_t _gear_ = 0, uint8_t _status_ = 0,
                  uint16_t _coolantTemp_ = 0, uint16_t _oilTemp_ = 0, uint16_t _engineTemp_ = 0)
 {
-    this->DashGuy_->gear =   _gear_;
-    this->DashGuy_->rpm  =    _rpm_;
+    this->DashGuy_.gear =   _gear_;
+    this->DashGuy_.rpm  =    _rpm_;
     // this->status         = _status_;
 
-    this->DashGuy_->coolantTemp = _coolantTemp_;
-    this->DashGuy_->oilTemp     =     _oilTemp_;
-    this->DashGuy_->engineTemp  =  _engineTemp_;
+    this->DashGuy_.coolantTemp = _coolantTemp_;
+    this->DashGuy_.oilTemp     =     _oilTemp_;
+    this->DashGuy_.engineTemp  =  _engineTemp_;
 
     Serial.println("Initializing DASH..");
 }
@@ -39,19 +39,19 @@ void IC_Dash::initLEDs()
     statLEDs_.setMaxRefreshRate(LED_MAX_REFRESHRATE);
 }
 
-void IC_Dash::Yippie()
-{
-    CRGB*  leds_on = this->tachLEDs;
-    CRGB* leds_off = this->tachLEDs;
+// void IC_Dash::Yippie()
+// {
+//     CRGB*  leds_on = this->tachLEDs;
+//     CRGB* leds_off = this->tachLEDs;
 
-    fill_solid(leds_on, TACH_LEDS, CRGB::Red);
+//     fill_solid(leds_on, TACH_LEDS, CRGB::Red);
            
-}
+// }
 
 void IC_Dash::blinkStatusLed()
 {
     digitalWrite(STATUS_LED, HIGH);
-    delay(5);
+    delay(120);
     digitalWrite(STATUS_LED, LOW);
 }
 
@@ -60,7 +60,7 @@ void IC_Dash::handleTachometer()
 {
     CRGB* leds = this->tachLEDs;
 
-    int height = map(this->DashGuy_->rpm, 0, MAX_RPM, 0, TACH_LEDS + 1);
+    int height = map(this->DashGuy_.rpm, 0, MAX_RPM, 0, TACH_LEDS + 1);
 
     fill_gradient(leds, TACH_LEDS - 1, CHSV(0, 255, 255), 0, CHSV(70, 255, 255), SHORTEST_HUES);
 
@@ -80,10 +80,13 @@ void IC_Dash::handleGear()
     digitalWrite(GEAR_EN, LOW);
     delayMicroseconds(100);
 
-    // GPIO1 is a port on the teensy
-    GPIO1_PSR &= this->DashGuy_->sevenSegNumPack[SEG_CLEAR];
-    GPIO1_PSR |= this->DashGuy_->sevenSegNumPack[this->DashGuy_->gear];
-    
+    // This SHIT DOES NOT WORK | HOW THE FUCK DO YOU DMA
+    GPIO1_DR &= this->DashGuy_.sevenSegNumPack[SEG_CLEAR];
+
+    delayMicroseconds(100);
+
+    GPIO1_DR |= this->DashGuy_.sevenSegNumPack[this->DashGuy_.gear];
+
     delayMicroseconds(100);
     digitalWrite(GEAR_EN, HIGH);
     delayMicroseconds(100);
@@ -136,12 +139,12 @@ void IC_Dash::setRPM(uint8_t* _buf_)
     can_rpm |= (_buf_[6] << 8);
     can_rpm |= (_buf_[7]);
 
-    this->DashGuy_->rpm = can_rpm;
+    this->DashGuy_.rpm = can_rpm;
 }
 
 void IC_Dash::setGEAR(uint8_t _gear_)
 {
-    this->DashGuy_->gear = _gear_;
+    this->DashGuy_.gear = _gear_;
 }
 
 // void IC_Dash::setSTATUS(uint8_t _status_)
@@ -156,18 +159,18 @@ void IC_Dash::setCoolantTemp(uint8_t* _buf_)
     can_coolantTemp |= (_buf_[6] << 8);
     can_coolantTemp |= (_buf_[7]);
 
-    this->DashGuy_->coolantTemp = can_coolantTemp;
+    this->DashGuy_.coolantTemp = can_coolantTemp;
 }
 
 
 uint16_t IC_Dash::getRPM()
 {
-    return this->DashGuy_->rpm;
+    return this->DashGuy_.rpm;
 }
 
 uint8_t IC_Dash::getGEAR()
 {
-    return this->DashGuy_->gear;
+    return this->DashGuy_.gear;
 }
 
 // uint8_t IC_Dash::getSTATUS()
@@ -185,6 +188,8 @@ void initDash(IC_Dash* _ic_dash_)
     pinMode(BCD_B, OUTPUT);
     pinMode(BCD_C, OUTPUT);
     pinMode(BCD_D, OUTPUT);
+
+    // GPIO1_DR |= PORT1_DR_OUTPUT;
 
     pinMode(STATUS_LED, OUTPUT);
 

@@ -14,6 +14,8 @@
 #define            BCD_C              40
 #define            BCD_D              41
 
+#define       PORT1_DR_OUTPUT        0x303000000
+
 
 // Trying to see if this will work for the Seven Seg 
 

@@ -13,10 +13,14 @@
 typedef struct IC_DashGuy
 {
     // The port is 32 bits :( so I gotta
-    const uint32_t sevenSegNumPack[11] = {SEG_NUM_0, SEG_NUM_1, SEG_NUM_2,
-                                          SEG_NUM_3, SEG_NUM_4, SEG_NUM_5,
-                                          SEG_NUM_6, SEG_NUM_7, SEG_NUM_8,
-                                          SEG_NUM_9, SEG_NUM_C};
+    const uint32_t sevenSegNumPack[11] = 
+    {
+        SEG_NUM_0, SEG_NUM_1, SEG_NUM_2,
+        SEG_NUM_3, SEG_NUM_4, SEG_NUM_5,
+        SEG_NUM_6, SEG_NUM_7, SEG_NUM_8,
+        SEG_NUM_9, SEG_NUM_C,
+    };
+
     uint8_t    gear;
     uint16_t    rpm;
 
@@ -33,12 +37,12 @@ class IC_Dash
 private:
 
     // This is for the lols free will.
-    //const char Yippie_[12] = "Y i p p i e";
+    // const char Yippie_[12] = "Y i p p i e";
 
     CRGB tachLEDs[TACH_LEDS] = {CRGB::Black};
     CRGB statLEDs[STAT_LEDS] = {CRGB::Black};
 
-    IC_DashGuy* DashGuy_;
+    IC_DashGuy DashGuy_;
 
     // uint8_t  status;
     
@@ -50,7 +54,7 @@ public:
     ~IC_Dash();
 
     void initLEDs();
-    void Yippie();
+    // void Yippie();
     void blinkStatusLed();
 
     void handleTachometer();

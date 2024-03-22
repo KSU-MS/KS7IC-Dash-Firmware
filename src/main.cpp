@@ -1,14 +1,14 @@
 
 #include "IC_Dash.h"
-#include "IC_Can.h"
+//#include "IC_Can.h"
 #include "Metro.h"
 
 
 
 
-uint16_t rpm = 0;
+// uint16_t rpm = 0;
 uint8_t gear = 0;
-uint8_t stat = 0;
+// uint8_t stat = 0;
 
 // Metro gear_ = Metro(1000);
 // Metro main_ = Metro(10);
@@ -22,19 +22,26 @@ void setup()
 {
     Serial.begin(9600);
 
-    //while(!Serial); // Wait for serial connection before proceeding
+    // while(!Serial); // Wait for serial connection before proceeding
+    
+    // Serial.println("BEGIN");
 
     IC_Dash_ = new IC_Dash();
-    //IC_Can_ = new  IC_Can();
+    // IC_Can_ = new  IC_Can();
 
     initDash(IC_Dash_);
+
+    IC_Dash_->blinkStatusLed();
 }
 
 
 void loop()
-{
-    // IC_Dash_->setGEAR(gear);
-    // IC_Dash_->handleGear();
+{ 
+    IC_Dash_->setGEAR(gear);
+
+    delayMicroseconds(100);
+
+    IC_Dash_->handleGear();
 
     gear++;
 
@@ -57,13 +64,12 @@ void loop()
     //     IC_Dash_->handleGear();
     // }
 
-    if (gear >= 9)
+    if (gear > 9)
     {
         gear = 0;
     }
 
-    Serial.println(gear);
+    // Serial.println(gear);
 
     delay(1000);
-
 }
