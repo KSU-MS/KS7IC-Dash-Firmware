@@ -44,7 +44,7 @@ private:
 
     IC_DashGuy DashGuy_;
 
-    // uint8_t  status;
+    uint8_t  status;
     
 public:
 

@@ -27,6 +27,7 @@ public:
      IC_Can();
     ~IC_Can();
 
+    // void can_READY();
 
     void read_Can(IC_Dash* _ic_dash_, uint8_t _can_ = _IC_CAN_ORG_);
     void write_Can(CAN_message_t& _msg_, uint8_t _can_ = _IC_CAN_DUP_);

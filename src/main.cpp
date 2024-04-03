@@ -1,18 +1,18 @@
 
 #include "IC_Dash.h"
-//#include "IC_Can.h"
+// #include "IC_Can.h"
 #include "Metro.h"
 
 
 
 
 // uint16_t rpm = 0;
-uint8_t gear = 0;
+// uint8_t gear = 0;
 // uint8_t stat = 0;
 
 // Metro gear_ = Metro(1000);
-// Metro main_ = Metro(10);
-// Metro  can_ = Metro(11);
+Metro main_ = Metro(150);
+Metro  can_ = Metro(1000);
 
 
 
@@ -22,7 +22,7 @@ void setup()
 {
     Serial.begin(9600);
 
-    // while(!Serial); // Wait for serial connection before proceeding
+    while (!Serial); // Wait for serial connection before proceeding
     
     // Serial.println("BEGIN");
 
@@ -37,13 +37,7 @@ void setup()
 
 void loop()
 { 
-    IC_Dash_->setGEAR(gear);
-
-    delayMicroseconds(100);
-
-    IC_Dash_->handleGear();
-
-    gear++;
+    // IC_Can_->read_Can(IC_Dash_);
 
     // As of right now these are just demostrating the final output results
     // These will not be in final build. Loop is reserved for actually doing the shit lol
@@ -56,20 +50,14 @@ void loop()
     // if (main_.check())
     // {
     //     IC_Dash_->handleTachometer();
-    // }
-
-    // if (gear_.check())
-    // {
-    //     IC_Dash_->setGEAR(gear);
     //     IC_Dash_->handleGear();
     // }
 
-    if (gear > 9)
-    {
-        gear = 0;
-    }
+    // IC_Dash_->blinkStatusLed();
 
-    // Serial.println(gear);
+    digitalWrite(STATUS_LED, HIGH);
+
+    Serial.print("Hello Word! \n");
 
     delay(1000);
 }

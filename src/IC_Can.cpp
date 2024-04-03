@@ -33,6 +33,14 @@ IC_Can::~IC_Can()
 }
 
 
+// void IC_Can::can_READY()
+// {
+//     digitalWrite(STATUS_LED, HIGH);
+//     delay(120);
+//     digitalWrite(STATUS_LED, LOW);
+// }
+
+
 void IC_Can::read_Can(IC_Dash* _ic_dash_, uint8_t _can_ = _IC_CAN_ORG_)
 {
     // Would like to see if using a switch case versus
@@ -47,6 +55,9 @@ void IC_Can::read_Can(IC_Dash* _ic_dash_, uint8_t _can_ = _IC_CAN_ORG_)
     case _IC_CAN_NONE_:
         break;
     case _IC_CAN_READY_:
+
+        //this->can_READY();
+
         switch (_msg_.id)
         {
         case _IC_CAN_MSG_GROUP_0_:

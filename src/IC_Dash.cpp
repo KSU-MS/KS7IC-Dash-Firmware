@@ -12,7 +12,7 @@ IC_Dash::IC_Dash(uint16_t _rpm_ = 0, uint8_t _gear_ = 0, uint8_t _status_ = 0,
 {
     this->DashGuy_.gear =   _gear_;
     this->DashGuy_.rpm  =    _rpm_;
-    // this->status         = _status_;
+    this->status         = _status_;
 
     this->DashGuy_.coolantTemp = _coolantTemp_;
     this->DashGuy_.oilTemp     =     _oilTemp_;
@@ -77,19 +77,19 @@ void IC_Dash::handleTachometer()
 
 void IC_Dash::handleGear()
 {
-    digitalWrite(GEAR_EN, LOW);
-    delayMicroseconds(100);
+    // digitalWrite(GEAR_EN, LOW);
+    // delayMicroseconds(100);
 
-    // This SHIT DOES NOT WORK | HOW THE FUCK DO YOU DMA
-    GPIO1_DR &= this->DashGuy_.sevenSegNumPack[SEG_CLEAR];
+    // // This SHIT DOES NOT WORK | HOW THE FUCK DO YOU DMA
+    // GPIO1_DR &= this->DashGuy_.sevenSegNumPack[SEG_CLEAR];
 
-    delayMicroseconds(100);
+    // delayMicroseconds(100);
 
-    GPIO1_DR |= this->DashGuy_.sevenSegNumPack[this->DashGuy_.gear];
+    // GPIO1_DR |= this->DashGuy_.sevenSegNumPack[this->DashGuy_.gear];
 
-    delayMicroseconds(100);
-    digitalWrite(GEAR_EN, HIGH);
-    delayMicroseconds(100);
+    // delayMicroseconds(100);
+    // digitalWrite(GEAR_EN, HIGH);
+    // delayMicroseconds(100);
 }
 
 void IC_Dash::handleStatus(uint8_t _status_)
@@ -197,7 +197,7 @@ void initDash(IC_Dash* _ic_dash_)
 
     delayMicroseconds(500);
 
-    //_ic_dash_->initLEDs();
+    _ic_dash_->initLEDs();
 
     Serial.println("Starting DASH..");
 }
