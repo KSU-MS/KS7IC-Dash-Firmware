@@ -16,24 +16,6 @@
 
 #define       PORT1_DR_OUTPUT        0x303000000
 
-
-// Trying to see if this will work for the Seven Seg 
-
-#define          SEG_NUM_C            0xCFCFFFFF
-#define          SEG_NUM_0            0x00000000
-#define          SEG_NUM_1            0x10000000
-#define          SEG_NUM_2            0x20000000           
-#define          SEG_NUM_3            0x30000000
-#define          SEG_NUM_4            0x00100000
-#define          SEG_NUM_5            0x10100000
-#define          SEG_NUM_6            0x20100000
-#define          SEG_NUM_7            0x30100000
-#define          SEG_NUM_8            0x00200000
-#define          SEG_NUM_9            0x10200000
-
-
-#define          SEG_CLEAR            10
-
 #define          TACH_LEDS            15
 #define          STAT_LEDS            5
 

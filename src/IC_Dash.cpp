@@ -8,15 +8,15 @@
 
 
 IC_Dash::IC_Dash(uint16_t _rpm_ = 0, uint8_t _gear_ = 0, uint8_t _status_ = 0,
-                 uint16_t _coolantTemp_ = 0, uint16_t _oilTemp_ = 0, uint16_t _engineTemp_ = 0)
+                 uint16_t _coolantTemp_ = 0, uint16_t _oilTemp_ = 0, uint16_t _batteryVoltage_ = 0)
 {
     this->DashGuy_.gear =   _gear_;
     this->DashGuy_.rpm  =    _rpm_;
-    this->status         = _status_;
+    this->status        = _status_;
 
-    this->DashGuy_.coolantTemp = _coolantTemp_;
-    this->DashGuy_.oilTemp     =     _oilTemp_;
-    this->DashGuy_.engineTemp  =  _engineTemp_;
+    this->DashGuy_.coolantTemp     =     _coolantTemp_;
+    this->DashGuy_.oilTemp         =         _oilTemp_;
+    this->DashGuy_.batteryVoltage  =  _batteryVoltage_;
 
     Serial.println("Initializing DASH..");
 }
@@ -51,7 +51,7 @@ void IC_Dash::initLEDs()
 void IC_Dash::blinkStatusLed()
 {
     digitalWrite(STATUS_LED, HIGH);
-    delay(120);
+    delay(50);
     digitalWrite(STATUS_LED, LOW);
 }
 
@@ -77,59 +77,64 @@ void IC_Dash::handleTachometer()
 
 void IC_Dash::handleGear()
 {
-    // digitalWrite(GEAR_EN, LOW);
-    // delayMicroseconds(100);
+    digitalWrite(GEAR_EN, LOW);
 
-    // // This SHIT DOES NOT WORK | HOW THE FUCK DO YOU DMA
-    // GPIO1_DR &= this->DashGuy_.sevenSegNumPack[SEG_CLEAR];
+    delayMicroseconds(200);
 
-    // delayMicroseconds(100);
+    bool led_a_high = this->DashGuy_.gear & 0b0001;
+    bool led_b_high = this->DashGuy_.gear & 0b0010;
+    bool led_c_high = this->DashGuy_.gear & 0b0100;
+    bool led_d_high = this->DashGuy_.gear & 0b1000;
 
-    // GPIO1_DR |= this->DashGuy_.sevenSegNumPack[this->DashGuy_.gear];
+    digitalWrite(BCD_A, led_a_high);
+    digitalWrite(BCD_B, led_b_high);
+    digitalWrite(BCD_C, led_c_high);
+    digitalWrite(BCD_D, led_d_high);
 
-    // delayMicroseconds(100);
-    // digitalWrite(GEAR_EN, HIGH);
-    // delayMicroseconds(100);
+    delayMicroseconds(200);
+    digitalWrite(GEAR_EN, HIGH);
+    delayMicroseconds(200);
+    digitalWrite(GEAR_EN, LOW);
 }
 
-void IC_Dash::handleStatus(uint8_t _status_)
-{
-    CRGB* leds = this->statLEDs;
+// void IC_Dash::handleStatus(uint8_t _status_)
+// {
+//     CRGB* leds = this->statLEDs;
 
-    uint8_t mask;
+//     uint8_t mask;
 
-    fill_solid(leds, STAT_LEDS, CRGB::Black);
+//     fill_solid(leds, STAT_LEDS, CRGB::Black);
 
-    for (uint8_t bit = 0; bit < STAT_LEDS; bit++)
-    {
-        mask = (1 << bit);
+//     for (uint8_t bit = 0; bit < STAT_LEDS; bit++)
+//     {
+//         mask = (1 << bit);
 
-        switch (_status_ & mask)
-        {
-        case _IC_NO_STATUS_:
-            break;
-        case _IC_OIL_PRESSURE_:
-            leds[0] = CRGB::Red;
-            break;
-        case _IC_OIL_TEMP_:
-            leds[1] = CRGB::Red;
-            break;
-        case _IC_LAUNCH_CONTROL_:
-            leds[2] = CRGB::Blue;
-            break;
-        case _IC_COOLANT_TEMP_:
-            leds[3] = CRGB::Red;
-            break;
-        case _IC_CHECK_ENG_:
-            leds[4] = CRGB::Orange;
-            break;
-        default:
-            break;
-        }
-    }
+//         switch (_status_ & mask)
+//         {
+//         case _IC_NO_STATUS_:
+//             break;
+//         case _IC_OIL_PRESSURE_:
+//             leds[0] = CRGB::Red;
+//             break;
+//         case _IC_OIL_TEMP_:
+//             leds[1] = CRGB::Red;
+//             break;
+//         case _IC_LAUNCH_CONTROL_:
+//             leds[2] = CRGB::Blue;
+//             break;
+//         case _IC_COOLANT_TEMP_:
+//             leds[3] = CRGB::Red;
+//             break;
+//         case _IC_CHECK_ENG_:
+//             leds[4] = CRGB::Orange;
+//             break;
+//         default:
+//             break;
+//         }
+//     }
 
-    statLEDs_.show();    
-}
+//     statLEDs_.show();    
+// }
 
 
 void IC_Dash::setRPM(uint8_t* _buf_)
@@ -162,6 +167,16 @@ void IC_Dash::setCoolantTemp(uint8_t* _buf_)
     this->DashGuy_.coolantTemp = can_coolantTemp;
 }
 
+void IC_Dash::setBatteryVoltage(uint8_t* _buf_)
+{
+    uint16_t can_batteryVoltage = 0;
+
+    can_batteryVoltage |= (_buf_[2] << 8);
+    can_batteryVoltage |= (_buf_[3]);
+
+    this->DashGuy_.batteryVoltage = can_batteryVoltage;
+}
+
 
 uint16_t IC_Dash::getRPM()
 {
@@ -188,8 +203,6 @@ void initDash(IC_Dash* _ic_dash_)
     pinMode(BCD_B, OUTPUT);
     pinMode(BCD_C, OUTPUT);
     pinMode(BCD_D, OUTPUT);
-
-    // GPIO1_DR |= PORT1_DR_OUTPUT;
 
     pinMode(STATUS_LED, OUTPUT);
 

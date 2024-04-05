@@ -56,8 +56,6 @@ void IC_Can::read_Can(IC_Dash* _ic_dash_, uint8_t _can_ = _IC_CAN_ORG_)
         break;
     case _IC_CAN_READY_:
 
-        //this->can_READY();
-
         switch (_msg_.id)
         {
         case _IC_CAN_MSG_GROUP_0_:
@@ -66,6 +64,9 @@ void IC_Can::read_Can(IC_Dash* _ic_dash_, uint8_t _can_ = _IC_CAN_ORG_)
         case _IC_CAN_MSG_GROUP_2_:
             _ic_dash_->setCoolantTemp(_msg_.buf);
             break;
+        case _IC_CAN_MSG_GROUP_3_:
+
+            break;
         case _IC_CAN_MSG_GROUP_33_:
             _ic_dash_->setGEAR(_msg_.buf[6]);
             break;        
@@ -73,11 +74,11 @@ void IC_Can::read_Can(IC_Dash* _ic_dash_, uint8_t _can_ = _IC_CAN_ORG_)
             break;
         }
 
-#if _DEBUG_
+        #if _DEBUG_
 
-        _ic_dash_->blinkStatusLed();
+            _ic_dash_->blinkStatusLed();
 
-#endif
+        #endif
 
         break;
     default:
