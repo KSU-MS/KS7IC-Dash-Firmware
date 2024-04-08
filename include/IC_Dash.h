@@ -18,8 +18,9 @@ typedef struct IC_DashGuy
     uint8_t    gear;
     uint16_t    rpm;
 
-    uint16_t coolantTemp;
-    uint16_t     oilTemp;
+    uint16_t    coolantTemp;
+    uint16_t        oilTemp;
+    uint16_t batteryVoltage;
 
 } IC_DashGuy;
 
@@ -42,7 +43,7 @@ private:
 public:
 
      IC_Dash(uint16_t _rpm_ = 0, uint8_t _gear_ = 0, uint8_t _status_ = 0,
-             uint16_t _coolantTemp_ = 0, uint16_t _oilTemp_ = 0, uint16_t _engineTemp_ = 0);
+             uint16_t _coolantTemp_ = 0, uint16_t _oilTemp_ = 0, uint16_t _batteryVoltage_ = 0);
 
     ~IC_Dash();
 
@@ -59,6 +60,7 @@ public:
     void setGEAR(uint8_t _gear_);
     // void setSTATUS(uint8_t _status_);
     void setCoolantTemp(uint8_t* _buf_);
+    void setBatteryVoltage(uint8_t* _buf_);
 
     uint16_t getRPM();
     uint8_t getGEAR();

@@ -56,16 +56,20 @@ void IC_Can::read_Can(IC_Dash* _ic_dash_, uint8_t _can_ = _IC_CAN_ORG_)
         break;
     case _IC_CAN_READY_:
 
+        // Cannot tell if sending the entire buffer is smart. 
+        // Also I could probably get away with having just one
+        // function that either passes in the can frame and handles 
+
         switch (_msg_.id)
         {
         case _IC_CAN_MSG_GROUP_0_:
             _ic_dash_->setRPM(_msg_.buf);
             break;
         case _IC_CAN_MSG_GROUP_2_:
-            _ic_dash_->setCoolantTemp(_msg_.buf);
+            _ic_dash_->setCoolantTemp(_msg_.buf); 
             break;
         case _IC_CAN_MSG_GROUP_3_:
-
+            _ic_dash_->setBatteryVoltage(_msg_.buf);
             break;
         case _IC_CAN_MSG_GROUP_33_:
             _ic_dash_->setGEAR(_msg_.buf[6]);
