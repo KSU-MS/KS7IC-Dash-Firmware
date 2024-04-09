@@ -11,7 +11,7 @@ IC_Dash::IC_Dash(uint16_t _rpm_ = 0, uint8_t _gear_ = 0, uint8_t _status_ = 0,
                  uint16_t _coolantTemp_ = 0, uint16_t _oilTemp_ = 0, uint16_t _batteryVoltage_ = 0,
                  uint16_t _checkEngineStatus_ = 0)
 {
-    // Probably not idealy how you should do this but whomp whomp.
+    // Probably not the most ideal way to do this but whomp whomp.
     
     this->DashGuy_.gear =   _gear_;
     this->DashGuy_.rpm  =    _rpm_;
