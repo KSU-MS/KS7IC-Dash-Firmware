@@ -8,22 +8,35 @@
 
 
 IC_Dash::IC_Dash(uint16_t _rpm_ = 0, uint8_t _gear_ = 0, uint8_t _status_ = 0,
-                 uint16_t _coolantTemp_ = 0, uint16_t _oilTemp_ = 0, uint16_t _batteryVoltage_ = 0)
+                 uint16_t _coolantTemp_ = 0, uint16_t _oilTemp_ = 0, uint16_t _batteryVoltage_ = 0,
+                 uint16_t _checkEngineStatus_ = 0)
 {
+    // Probably not idealy how you should do this but whomp whomp.
+    
     this->DashGuy_.gear =   _gear_;
     this->DashGuy_.rpm  =    _rpm_;
-    this->status        = _status_;
+    // this->status        = _status_;
 
-    this->DashGuy_.coolantTemp     =     _coolantTemp_;
-    this->DashGuy_.oilTemp         =         _oilTemp_;
-    this->DashGuy_.batteryVoltage  =  _batteryVoltage_;
+    this->DashGuy_.coolantTemp       =       _coolantTemp_;
+    this->DashGuy_.oilTemp           =           _oilTemp_;
+    this->DashGuy_.batteryVoltage    =    _batteryVoltage_;
+    this->DashGuy_.checkEngineStatus = _checkEngineStatus_;
 
-    Serial.println("Initializing DASH..");
+
+    // Serial.println("Initializing DASH..");
 }
 
 IC_Dash::~IC_Dash()
 {
-    Serial.println("Bye Bye..");
+    // This Class should never go out of scope.
+    // Serial.println("Bye Bye..");
+}
+
+
+void IC_Dash::dashDriver()
+{
+    this->handleTachometer();
+    this->handleCoolantTemp();
 }
 
 
@@ -39,14 +52,29 @@ void IC_Dash::initLEDs()
     statLEDs_.setMaxRefreshRate(LED_MAX_REFRESHRATE);
 }
 
-// void IC_Dash::Yippie()
-// {
-//     CRGB*  leds_on = this->tachLEDs;
-//     CRGB* leds_off = this->tachLEDs;
+void IC_Dash::Yippie()
+{
+    CRGB* tach_leds = this->tachLEDs;
+    CRGB* stat_leds = this->statLEDs;
 
-//     fill_solid(leds_on, TACH_LEDS, CRGB::Red);
-           
-// }
+    for (uint8_t i = 0; i < TACH_LEDS; i++)
+    {
+        tach_leds[i] = CRGB::Red;
+        tachLEDs_.show();
+        delay(100);
+    }
+    for (uint8_t i = 0; i < STAT_LEDS; i++)
+    {
+        stat_leds[i] = CRGB::Red;
+        statLEDs_.show();
+        delay(100);
+    }
+
+    fill_solid(tach_leds, TACH_LEDS, CRGB::Black);
+    fill_solid(stat_leds, TACH_LEDS, CRGB::Black);
+    tachLEDs_.show();
+    statLEDs_.show();
+}
 
 void IC_Dash::blinkStatusLed()
 {
@@ -136,18 +164,41 @@ void IC_Dash::handleGear()
 //     statLEDs_.show();    
 // }
 
+void IC_Dash::handleCoolantTemp()
+{
+    CRGB* leds = this->statLEDs;
 
-void IC_Dash::setRPM(uint8_t* _buf_)
+    if (this->DashGuy_.coolantTemp < 180.0f)
+    {
+        leds[3] = CRGB::Blue;
+    }
+    else if (this->DashGuy_.coolantTemp >= 180.0f || 
+             this->DashGuy_.coolantTemp < 220.0f)
+    {
+        leds[3] = CRGB::Black;
+    }
+    else if (this->DashGuy_.coolantTemp >= 220.0f ||
+             this->DashGuy_.coolantTemp <= 240.0f)
+    {
+        leds[3] = CRGB::Yellow;
+    }
+    else leds[3] = CRGB::Red;
+
+    statLEDs_.show();
+}
+
+
+void IC_Dash::set_RPM(uint8_t _byte_H_, uint8_t _byte_L_)
 {
     uint16_t can_rpm = 0;
 
-    can_rpm |= (_buf_[6] << 8);
-    can_rpm |= (_buf_[7]);
+    can_rpm |= (_byte_H_ << 8);
+    can_rpm |= (_byte_L_);
 
     this->DashGuy_.rpm = can_rpm;
 }
 
-void IC_Dash::setGEAR(uint8_t _gear_)
+void IC_Dash::set_GEAR(uint8_t _gear_)
 {
     this->DashGuy_.gear = _gear_;
 }
@@ -157,24 +208,34 @@ void IC_Dash::setGEAR(uint8_t _gear_)
 //     this->status = _status_;
 // }
 
-void IC_Dash::setCoolantTemp(uint8_t* _buf_)
+void IC_Dash::set_CoolantTemp(uint8_t _byte_H_, uint8_t _byte_L_)
 {
     uint16_t can_coolantTemp = 0;
 
-    can_coolantTemp |= (_buf_[6] << 8);
-    can_coolantTemp |= (_buf_[7]);
+    can_coolantTemp |= (_byte_H_ << 8);
+    can_coolantTemp |= (_byte_L_);
 
     this->DashGuy_.coolantTemp = can_coolantTemp;
 }
 
-void IC_Dash::setBatteryVoltage(uint8_t* _buf_)
+void IC_Dash::set_BatteryVoltage(uint8_t _byte_H_, uint8_t _byte_L_)
 {
     uint16_t can_batteryVoltage = 0;
 
-    can_batteryVoltage |= (_buf_[2] << 8);
-    can_batteryVoltage |= (_buf_[3]);
+    can_batteryVoltage |= (_byte_H_ << 8);
+    can_batteryVoltage |= (_byte_L_);
 
     this->DashGuy_.batteryVoltage = can_batteryVoltage;
+}
+
+void IC_Dash::set_CheckEngineStatus(uint8_t _byte_H_, uint8_t _byte_L_)
+{
+    uint16_t can_checkEngineStatus = 0;
+
+    can_checkEngineStatus |= (_byte_H_ << 8);
+    can_checkEngineStatus |= (_byte_L_);
+
+    this->DashGuy_.checkEngineStatus = can_checkEngineStatus;
 }
 
 
@@ -211,6 +272,7 @@ void initDash(IC_Dash* _ic_dash_)
     delayMicroseconds(500);
 
     _ic_dash_->initLEDs();
+    _ic_dash_->Yippie();
 
-    Serial.println("Starting DASH..");
+    // Serial.println("Starting DASH..");
 }

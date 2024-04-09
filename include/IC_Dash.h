@@ -18,9 +18,10 @@ typedef struct IC_DashGuy
     uint8_t    gear;
     uint16_t    rpm;
 
-    uint16_t    coolantTemp;
-    uint16_t        oilTemp;
-    uint16_t batteryVoltage;
+    uint16_t       coolantTemp;
+    uint16_t           oilTemp;
+    uint16_t    batteryVoltage;
+    uint16_t checkEngineStatus;
 
 } IC_DashGuy;
 
@@ -38,29 +39,35 @@ private:
 
     IC_DashGuy DashGuy_;
 
-    uint8_t  status;
-    
-public:
-
-     IC_Dash(uint16_t _rpm_ = 0, uint8_t _gear_ = 0, uint8_t _status_ = 0,
-             uint16_t _coolantTemp_ = 0, uint16_t _oilTemp_ = 0, uint16_t _batteryVoltage_ = 0);
-
-    ~IC_Dash();
-
-    void initLEDs();
-    // void Yippie();
-    void blinkStatusLed();
+    // uint8_t  status;
 
     void handleTachometer();
     void handleGear();
     // void handleStatus(uint8_t _status_);
     void handleCoolantTemp();
+    void handleCheckEngine();
+    
+public:
 
-    void setRPM(uint8_t* _buf_);
-    void setGEAR(uint8_t _gear_);
+     IC_Dash(uint16_t _rpm_ = 0, uint8_t _gear_ = 0, uint8_t _status_ = 0,
+             uint16_t _coolantTemp_ = 0, uint16_t _oilTemp_ = 0, uint16_t _batteryVoltage_ = 0,
+             uint16_t _checkEngineStatus_ = 0);
+
+    ~IC_Dash();
+
+    void dashDriver();
+
+    void initLEDs();
+
+    void Yippie();
+    void blinkStatusLed();
+
+    void set_RPM(uint8_t _byte_H_, uint8_t _byte_L_);
+    void set_GEAR(uint8_t _gear_);
     // void setSTATUS(uint8_t _status_);
-    void setCoolantTemp(uint8_t* _buf_);
-    void setBatteryVoltage(uint8_t* _buf_);
+    void set_CoolantTemp(uint8_t _byte_H_, uint8_t _byte_L_);
+    void set_BatteryVoltage(uint8_t _byte_H_, uint8_t _byte_L_);
+    void set_CheckEngineStatus(uint8_t _byte_H_, uint8_t _byte_L_);
 
     uint16_t getRPM();
     uint8_t getGEAR();

@@ -63,17 +63,20 @@ void IC_Can::read_Can(IC_Dash* _ic_dash_, uint8_t _can_ = _IC_CAN_ORG_)
         switch (_msg_.id)
         {
         case _IC_CAN_MSG_GROUP_0_:
-            _ic_dash_->setRPM(_msg_.buf);
+            _ic_dash_->set_RPM(_msg_.buf[6], _msg_.buf[7]);
             break;
         case _IC_CAN_MSG_GROUP_2_:
-            _ic_dash_->setCoolantTemp(_msg_.buf); 
+            _ic_dash_->set_CoolantTemp(_msg_.buf[6], _msg_.buf[7]); 
             break;
         case _IC_CAN_MSG_GROUP_3_:
-            _ic_dash_->setBatteryVoltage(_msg_.buf);
+            _ic_dash_->set_BatteryVoltage(_msg_.buf[2], _msg_.buf[3]);
             break;
         case _IC_CAN_MSG_GROUP_33_:
-            _ic_dash_->setGEAR(_msg_.buf[6]);
-            break;        
+            _ic_dash_->set_GEAR(_msg_.buf[6]);
+            break;  
+        case _IC_CAN_MSG_GROUP_60_:
+
+            break;      
         default:
             break;
         }
