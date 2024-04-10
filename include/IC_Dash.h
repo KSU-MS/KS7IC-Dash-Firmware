@@ -32,7 +32,7 @@ class IC_Dash
 private:
 
     // This is for the lols free will.
-    // const char Yippie_[12] = "Y i p p i e";
+    const char Yippie_[12] = "Y i p p i e";
 
     CRGB tachLEDs[TACH_LEDS] = {CRGB::Black};
     CRGB statLEDs[STAT_LEDS] = {CRGB::Black};
@@ -64,7 +64,7 @@ public:
 
     void set_RPM(uint8_t _byte_H_, uint8_t _byte_L_);
     void set_GEAR(uint8_t _gear_);
-    // void setSTATUS(uint8_t _status_);
+    // void set_STATUS(uint8_t _status_);
     void set_CoolantTemp(uint8_t _byte_H_, uint8_t _byte_L_);
     void set_BatteryVoltage(uint8_t _byte_H_, uint8_t _byte_L_);
     void set_CheckEngineStatus(uint8_t _byte_H_, uint8_t _byte_L_);

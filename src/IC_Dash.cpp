@@ -203,7 +203,7 @@ void IC_Dash::set_GEAR(uint8_t _gear_)
     this->DashGuy_.gear = _gear_;
 }
 
-// void IC_Dash::setSTATUS(uint8_t _status_)
+// void IC_Dash::set_STATUS(uint8_t _status_)
 // {
 //     this->status = _status_;
 // }
