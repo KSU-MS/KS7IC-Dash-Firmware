@@ -3,7 +3,7 @@
 #define IC_DASH_UTILS.H
 
 
-#define           _DEBUG_             1
+#define           _DEBUG_             0
 
 
 #define           LOWV_EN             23
