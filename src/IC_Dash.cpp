@@ -33,11 +33,11 @@ IC_Dash::~IC_Dash()
 }
 
 
-void IC_Dash::dashDriver()
-{
-    this->handleTachometer();
-    this->handleCoolantTemp();
-}
+// void IC_Dash::dashDriver()
+// {
+//     this->handleTachometer();
+//     this->handleCoolantTemp();
+// }
 
 
 void IC_Dash::initLEDs()
@@ -86,17 +86,21 @@ void IC_Dash::blinkStatusLed()
 
 void IC_Dash::handleTachometer()
 {
-    CRGB* leds = this->tachLEDs;
+    // CRGB* leds = this->tachLEDs;
 
-    int height = map(this->DashGuy_.rpm, 0, MAX_RPM, 0, TACH_LEDS + 1);
+    // Serial.println("Handle Tach!");
 
-    fill_gradient(leds, TACH_LEDS - 1, CHSV(0, 255, 255), 0, CHSV(70, 255, 255), SHORTEST_HUES);
+    this->height = map(this->DashGuy_.rpm, 0, MAX_RPM, 0, TACH_LEDS + 1);
+
+    // fill_gradient(leds, TACH_LEDS - 1, CHSV(0, 255, 255), 0, CHSV(70, 255, 255), SHORTEST_HUES);
+    fill_gradient(this->tachLEDs, TACH_LEDS - 1, CHSV(0, 255, 255), 0, CHSV(70, 255, 255), SHORTEST_HUES);
 
     for (int i = 0; i < TACH_LEDS; i++) 
     {
-        if (i >= height)
+        if (i >= this->height)
         {
-            leds[i] = CRGB::Black;
+            // leds[i] = CRGB::Black;
+            this->tachLEDs[i] = CRGB::Black;
         }
     }
 
@@ -187,6 +191,11 @@ void IC_Dash::handleCoolantTemp()
     statLEDs_.show();
 }
 
+void IC_Dash::handleCheckEngine()
+{
+
+}
+
 
 void IC_Dash::set_RPM(uint8_t _byte_H_, uint8_t _byte_L_)
 {
@@ -194,6 +203,9 @@ void IC_Dash::set_RPM(uint8_t _byte_H_, uint8_t _byte_L_)
 
     can_rpm |= (_byte_H_ << 8);
     can_rpm |= (_byte_L_);
+
+    // Serial.print("RPM: ");
+    // Serial.println(can_rpm);
 
     this->DashGuy_.rpm = can_rpm;
 }
@@ -224,6 +236,9 @@ void IC_Dash::set_BatteryVoltage(uint8_t _byte_H_, uint8_t _byte_L_)
 
     can_batteryVoltage |= (_byte_H_ << 8);
     can_batteryVoltage |= (_byte_L_);
+
+    // Serial.print((float)can_batteryVoltage / 10.0f);
+    // Serial.println("V");
 
     this->DashGuy_.batteryVoltage = can_batteryVoltage;
 }

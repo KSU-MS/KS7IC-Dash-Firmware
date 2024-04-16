@@ -15,11 +15,13 @@ IC_Can::IC_Can()
     this->IC_CAN_ORG.setMaxMB(NUM_RXTX_MAILBOXES);
     this->IC_CAN_DUP.setMaxMB(NUM_RXTX_MAILBOXES);
 
-    for (uint8_t BOX = 0; BOX < NUM_RXTX_MAILBOXES; BOX++)
+    for (uint64_t BOX = 0; BOX < NUM_RXTX_MAILBOXES; BOX++)
     {
         this->IC_CAN_ORG.setMB((FLEXCAN_MAILBOX)BOX, RX, STD);
         this->IC_CAN_DUP.setMB((FLEXCAN_MAILBOX)BOX, TX, STD);
     }
+
+    // this->IC_CAN_ORG.enableFIFO(false);
 
     // this->IC_CAN_ORG.mailboxStatus();
     // this->IC_CAN_DUP.mailboxStatus();
@@ -50,46 +52,77 @@ void IC_Can::read_Can(IC_Dash* _ic_dash_, uint8_t _can_ = _IC_CAN_ORG_)
 
     CAN_message_t _msg_;
 
-    switch (this->IC_CAN_ORG.read(_msg_))
+    // switch (this->IC_CAN_ORG.read(_msg_))
+    // {
+    // case _IC_CAN_NONE_:
+    //     break;
+    // case _IC_CAN_READY_:
+    //     switch (_msg_.id)
+    //     {
+    //     case _IC_CAN_MSG_GROUP_0_:
+    //         _ic_dash_->set_RPM(_msg_.buf[6], _msg_.buf[7]);
+    //         Serial.println("RPM");
+    //         break;
+    //     case _IC_CAN_MSG_GROUP_2_:
+    //         _ic_dash_->set_CoolantTemp(_msg_.buf[6], _msg_.buf[7]); 
+    //         Serial.println("Coolant Temp");
+    //         break;
+    //     case _IC_CAN_MSG_GROUP_3_:
+    //         _ic_dash_->set_BatteryVoltage(_msg_.buf[2], _msg_.buf[3]);
+    //         Serial.println("Battery Voltage");
+    //         break;
+    //     case _IC_CAN_MSG_GROUP_33_:
+    //         _ic_dash_->set_GEAR(_msg_.buf[6]);
+    //         Serial.println("Gear");
+    //         break;  
+    //     case _IC_CAN_MSG_GROUP_60_:
+    //         break;      
+    //     default:
+    //         break;
+    //     }
+
+    //     // #if _DEBUG_
+
+    //     //     _ic_dash_->blinkStatusLed();
+
+    //     // #endif
+
+    //     break;
+    // default:
+    //     break;
+    // }
+
+    if (this->IC_CAN_ORG.read(_msg_))
     {
-    case _IC_CAN_NONE_:
-        break;
-    case _IC_CAN_READY_:
-
-        // Cannot tell if sending the entire buffer is smart. 
-        // Also I could probably get away with having just one
-        // function that either passes in the can frame and handles 
-
         switch (_msg_.id)
         {
         case _IC_CAN_MSG_GROUP_0_:
             _ic_dash_->set_RPM(_msg_.buf[6], _msg_.buf[7]);
+            Serial.println("RPM");
             break;
         case _IC_CAN_MSG_GROUP_2_:
             _ic_dash_->set_CoolantTemp(_msg_.buf[6], _msg_.buf[7]); 
+            Serial.println("Coolant Temp");
             break;
         case _IC_CAN_MSG_GROUP_3_:
             _ic_dash_->set_BatteryVoltage(_msg_.buf[2], _msg_.buf[3]);
+            Serial.println("Battery Voltage");
             break;
         case _IC_CAN_MSG_GROUP_33_:
             _ic_dash_->set_GEAR(_msg_.buf[6]);
+            Serial.println("Gear");
             break;  
         case _IC_CAN_MSG_GROUP_60_:
-
             break;      
         default:
             break;
         }
 
-        #if _DEBUG_
+    #if _DEBUG_
 
-            _ic_dash_->blinkStatusLed();
+        _ic_dash_->blinkStatusLed();
 
-        #endif
-
-        break;
-    default:
-        break;
+    #endif
     }
 }
 

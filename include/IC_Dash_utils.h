@@ -32,6 +32,10 @@
 #define        _IC_CAN_NONE_          0
 #define       _IC_CAN_READY_          1
 
+#define      _METRO_CAN_READY_        0b01
+#define      _METRO_MAIN_READY_       0b10
+#define        _METRO_READY_          0b11
+
 #define        _IC_CAN_ORG_           0
 #define        _IC_CAN_DUP_           1
 
@@ -48,7 +52,9 @@
 
 #define       NUM_RXTX_MAILBOXES      8
 
-#define         CAN_BAUD_RATE         250000
+#define           RX_MAILBOX_1        0
+
+#define         CAN_BAUD_RATE         1000000
 
 #define     _IC_CAN_MSG_GROUP_0_      0x5F0
 #define     _IC_CAN_MSG_GROUP_2_      0x5F2

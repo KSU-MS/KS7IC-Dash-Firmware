@@ -4,12 +4,10 @@
 #include "Metro.h"
 
 
-// uint16_t rpm = 0;
-// uint8_t gear = 0;
-// uint8_t stat = 0;
 
-Metro main_ = Metro(200);
-Metro  can_ = Metro(100);
+Metro main_ = Metro(1000);
+Metro tach_ = Metro(50);
+
 
 
 void setup()
@@ -29,13 +27,17 @@ void setup()
 
 void loop()
 { 
-    if (can_.check())
-    {
-        IC_Can_->read_Can(IC_Dash_);
-    }
+    IC_Can_->read_Can(IC_Dash_);
     
     if (main_.check())
     {
-        IC_Dash_->dashDriver();
+        IC_Dash_->handleCoolantTemp();
+        IC_Dash_->handleGear();
+        IC_Dash_->handleCheckEngine();
+    }
+
+    if (tach_.check())
+    {
+        IC_Dash_->handleTachometer();
     }
 }

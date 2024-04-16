@@ -32,20 +32,22 @@ class IC_Dash
 private:
 
     // This is for the lols free will.
-    const char Yippie_[12] = "Y i p p i e";
+    // const char Yippie_[12] = "Y i p p i e";
 
     CRGB tachLEDs[TACH_LEDS] = {CRGB::Black};
     CRGB statLEDs[STAT_LEDS] = {CRGB::Black};
 
     IC_DashGuy DashGuy_;
 
+    uint8_t height = 0;
+
     // uint8_t  status;
 
-    void handleTachometer();
-    void handleGear();
+    // void handleTachometer();
+    // void handleGear();
     // void handleStatus(uint8_t _status_);
-    void handleCoolantTemp();
-    void handleCheckEngine();
+    // void handleCoolantTemp();
+    // void handleCheckEngine();
     
 public:
 
@@ -55,7 +57,13 @@ public:
 
     ~IC_Dash();
 
-    void dashDriver();
+    // void dashDriver();
+
+    void handleTachometer();
+    void handleGear();
+    // void handleStatus(uint8_t _status_);
+    void handleCoolantTemp();
+    void handleCheckEngine();
 
     void initLEDs();
 
