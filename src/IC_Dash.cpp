@@ -33,6 +33,93 @@ IC_Dash::~IC_Dash()
 }
 
 
+void IC_Dash::initDash()
+{
+    pinMode(LOWV_EN, OUTPUT);
+    pinMode(GEAR_EN, OUTPUT);
+
+    pinMode(BCD_A, OUTPUT);
+    pinMode(BCD_B, OUTPUT);
+    pinMode(BCD_C, OUTPUT);
+    pinMode(BCD_D, OUTPUT);
+
+    pinMode(STATUS_LED, OUTPUT);
+
+    digitalWrite(LOWV_EN, HIGH);
+
+    delayMicroseconds(500);
+
+    this->initLEDs();
+    this->Yippie();
+
+    // Serial.println("Starting DASH..");
+}
+
+
+void IC_Dash::initCan()
+{
+    this->IC_CAN_ORG.begin();
+    // this->IC_CAN_DUP.begin();
+
+    this->IC_CAN_ORG.setBaudRate(CAN_BAUD_RATE);
+    // this->IC_CAN_DUP.setBaudRate(CAN_BAUD_RATE);
+
+    this->IC_CAN_ORG.setMaxMB(NUM_RXTX_MAILBOXES);
+    // this->IC_CAN_DUP.setMaxMB(NUM_RXTX_MAILBOXES);
+
+    for (uint64_t BOX = 0; BOX < NUM_RXTX_MAILBOXES; BOX++)
+    {
+        this->IC_CAN_ORG.setMB((FLEXCAN_MAILBOX)BOX, RX, STD);
+        // this->IC_CAN_DUP.setMB((FLEXCAN_MAILBOX)BOX, TX, STD);
+    }
+}
+
+
+void IC_Dash::read_Can()
+{
+    // Would like to see if using a switch case versus
+    // an if block is better at catching CAN frames.
+
+    // After testing I think this is better ngl
+
+    CAN_message_t _msg_;
+
+    if (this->IC_CAN_ORG.read(_msg_))
+    {
+        switch (_msg_.id)
+        {
+        case _IC_CAN_MSG_GROUP_0_:
+            this->set_RPM(_msg_.buf[6], _msg_.buf[7]);
+            // Serial.println("RPM");
+            break;
+        case _IC_CAN_MSG_GROUP_2_:
+            this->set_CoolantTemp(_msg_.buf[6], _msg_.buf[7]); 
+            // Serial.println("Coolant Temp");
+            break;
+        case _IC_CAN_MSG_GROUP_3_:
+            this->set_BatteryVoltage(_msg_.buf[2], _msg_.buf[3]);
+            // Serial.println("Battery Voltage");
+            break;
+        case _IC_CAN_MSG_GROUP_33_:
+            this->set_GEAR(_msg_.buf[6]);
+            // Serial.println("Gear");
+            break;  
+        case _IC_CAN_MSG_GROUP_60_:
+            break;      
+        default:
+            break;
+        }
+
+    #if _DEBUG_
+
+        this->.blinkStatusLed();
+
+    #endif
+    }
+}
+
+
+
 // void IC_Dash::dashDriver()
 // {
 //     this->handleTachometer();
@@ -44,8 +131,8 @@ void IC_Dash::initLEDs()
 {
     tachLEDs_.addLeds<WS2812, TACH_DPIN, GRB>(this->tachLEDs, TACH_LEDS);
     statLEDs_.addLeds<WS2812, INDI_DPIN, GRB>(this->statLEDs, STAT_LEDS);
-    tachLEDs_.setMaxPowerInVoltsAndMilliamps(5, 200);
-    statLEDs_.setMaxPowerInVoltsAndMilliamps(5, 200);
+    tachLEDs_.setMaxPowerInVoltsAndMilliamps(5, 500);
+    statLEDs_.setMaxPowerInVoltsAndMilliamps(5, 500);
     tachLEDs_.setBrightness(LED_MAX_BRIGHTNESS);
     statLEDs_.setBrightness(LED_MAX_BRIGHTNESS);
     tachLEDs_.setMaxRefreshRate(LED_MAX_REFRESHRATE);
@@ -270,24 +357,4 @@ uint8_t IC_Dash::getGEAR()
 // }
 
 
-void initDash(IC_Dash* _ic_dash_)
-{
-    pinMode(LOWV_EN, OUTPUT);
-    pinMode(GEAR_EN, OUTPUT);
 
-    pinMode(BCD_A, OUTPUT);
-    pinMode(BCD_B, OUTPUT);
-    pinMode(BCD_C, OUTPUT);
-    pinMode(BCD_D, OUTPUT);
-
-    pinMode(STATUS_LED, OUTPUT);
-
-    digitalWrite(LOWV_EN, HIGH);
-
-    delayMicroseconds(500);
-
-    _ic_dash_->initLEDs();
-    _ic_dash_->Yippie();
-
-    // Serial.println("Starting DASH..");
-}

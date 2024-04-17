@@ -5,6 +5,7 @@
 
 #include <Arduino.h>
 #include <FastLED.h>
+#include <FlexCAN_T4.h>
 
 #include "IC_Dash_utils.h"
 
@@ -37,6 +38,9 @@ private:
     CRGB tachLEDs[TACH_LEDS] = {CRGB::Black};
     CRGB statLEDs[STAT_LEDS] = {CRGB::Black};
 
+    FlexCAN_T4<CAN2, RX_SIZE_256, TX_SIZE_16> IC_CAN_ORG;
+    // FlexCAN_T4<CAN1, RX_SIZE_256, TX_SIZE_16> IC_CAN_DUP;
+
     IC_DashGuy DashGuy_;
 
     uint8_t height = 0;
@@ -56,6 +60,11 @@ public:
              uint16_t _checkEngineStatus_ = 0);
 
     ~IC_Dash();
+
+    void initDash();
+    void initCan(); 
+
+    void read_Can();
 
     // void dashDriver();
 
@@ -80,15 +89,17 @@ public:
     uint16_t getRPM();
     uint8_t getGEAR();
     // uint8_t getSTATUS();
+
 };
 
 
 static CFastLED tachLEDs_;
 static CFastLED statLEDs_;
 
-static IC_Dash*  IC_Dash_;
+static IC_Dash  IC_Dash_;
 
-void initDash(IC_Dash* _ic_dash_);
+void initDash();
+void initCan();
 
 
 #endif
