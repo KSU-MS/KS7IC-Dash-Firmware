@@ -129,6 +129,8 @@ void IC_Dash::initLEDs()
     statLEDs_.setBrightness(LED_MAX_BRIGHTNESS);
     tachLEDs_.setMaxRefreshRate(LED_MAX_REFRESHRATE);
     statLEDs_.setMaxRefreshRate(LED_MAX_REFRESHRATE);
+
+    fill_gradient(this->tachLEDs, TACH_LEDS - 1, CHSV(0, 255, 255), 0, CHSV(70, 255, 255), SHORTEST_HUES);
 }
 
 void IC_Dash::Yippie()
@@ -165,27 +167,15 @@ void IC_Dash::blinkStatusLed()
 
 void IC_Dash::handleTachometer()
 {
-    // CRGB* leds = this->tachLEDs;
-
-    // Serial.println("Handle Tach!");
-    if (this->DashGuy_.rpm < 50)
-    {
-        this->height = 0;
-    }
-    else if (this->DashGuy_.rpm >= 50 && this->DashGuy_.rpm <= 4000)
-    {
-        this->height = 1;
-    }
+    CRGB* leds = this->tachLEDs;
 
     // fill_gradient(leds, TACH_LEDS - 1, CHSV(0, 255, 255), 0, CHSV(70, 255, 255), SHORTEST_HUES);
-    fill_gradient(this->tachLEDs, TACH_LEDS - 1, CHSV(0, 255, 255), 0, CHSV(70, 255, 255), SHORTEST_HUES);
-
+    
     for (int i = 0; i < TACH_LEDS; i++) 
     {
         if (i >= this->height)
         {
-            // leds[i] = CRGB::Black;
-            this->tachLEDs[i] = CRGB::Black;
+            leds[i] = CRGB::Black;
         }
     }
 
@@ -214,44 +204,6 @@ void IC_Dash::handleGear()
     digitalWrite(GEAR_EN, LOW);
 }
 
-// void IC_Dash::handleStatus(uint8_t _status_)
-// {
-//     CRGB* leds = this->statLEDs;
-
-//     uint8_t mask;
-
-//     fill_solid(leds, STAT_LEDS, CRGB::Black);
-
-//     for (uint8_t bit = 0; bit < STAT_LEDS; bit++)
-//     {
-//         mask = (1 << bit);
-
-//         switch (_status_ & mask)
-//         {
-//         case _IC_NO_STATUS_:
-//             break;
-//         case _IC_OIL_PRESSURE_:
-//             leds[0] = CRGB::Red;
-//             break;
-//         case _IC_OIL_TEMP_:
-//             leds[1] = CRGB::Red;
-//             break;
-//         case _IC_LAUNCH_CONTROL_:
-//             leds[2] = CRGB::Blue;
-//             break;
-//         case _IC_COOLANT_TEMP_:
-//             leds[3] = CRGB::Red;
-//             break;
-//         case _IC_CHECK_ENG_:
-//             leds[4] = CRGB::Orange;
-//             break;
-//         default:
-//             break;
-//         }
-//     }
-
-//     statLEDs_.show();    
-// }
 
 void IC_Dash::handleCoolantTemp()
 {
@@ -289,8 +241,16 @@ void IC_Dash::set_RPM(uint8_t _byte_H_, uint8_t _byte_L_)
     can_rpm |= (_byte_H_ << 8);
     can_rpm |= (_byte_L_);
 
-    this->height = map(can_rpm - 4000, 0, MAX_RPM - 4000, 0, TACH_LEDS + 1);
-
+    if (can_rpm < 50)
+    {
+        this->height = 0;
+    }
+    else if (can_rpm >= 50 && can_rpm <= 4000)
+    {
+        this->height = 1;
+    }
+    else this->height = map(can_rpm - 4000, 0, MAX_RPM - 4000, 0, TACH_LEDS + 1);
+    
     this->DashGuy_.rpm = can_rpm;
 }
 

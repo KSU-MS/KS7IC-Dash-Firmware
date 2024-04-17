@@ -32,23 +32,15 @@ class IC_Dash
 {
 private:
 
-    // This is for the lols free will.
-    // const char Yippie_[12] = "Y i p p i e";
-
-    CRGB tachLEDs[TACH_LEDS] = {CRGB::Black};
-    CRGB statLEDs[STAT_LEDS] = {CRGB::Black};
-
-    // FlexCAN_T4<CAN1, RX_SIZE_256, TX_SIZE_16> IC_CAN_DUP;
+    CRGB tachLEDs[TACH_LEDS];
+    CRGB statLEDs[STAT_LEDS];
 
     IC_DashGuy DashGuy_;
 
     uint8_t height = 0;
 
-    // uint8_t  status;
-
     void set_RPM(uint8_t _byte_H_, uint8_t _byte_L_);
     void set_GEAR(uint8_t _gear_);
-    // void set_STATUS(uint8_t _status_);
     void set_CoolantTemp(uint8_t _byte_H_, uint8_t _byte_L_);
     void set_BatteryVoltage(uint8_t _byte_H_, uint8_t _byte_L_);
     void set_CheckEngineStatus(uint8_t _byte_H_, uint8_t _byte_L_);
@@ -68,7 +60,6 @@ public:
 
     void handleTachometer();
     void handleGear();
-    // void handleStatus(uint8_t _status_);
     void handleCoolantTemp();
     void handleCheckEngine();
 
@@ -79,8 +70,6 @@ public:
 
     uint16_t getRPM();
     uint8_t getGEAR();
-    // uint8_t getSTATUS();
-
 };
 
 
