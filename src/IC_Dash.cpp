@@ -176,7 +176,6 @@ void IC_Dash::handleTachometer()
     {
         this->height = 1;
     }
-    else this->height = map(this->DashGuy_.rpm - 4000, 0, MAX_RPM - 4000, 0, TACH_LEDS + 1);
 
     // fill_gradient(leds, TACH_LEDS - 1, CHSV(0, 255, 255), 0, CHSV(70, 255, 255), SHORTEST_HUES);
     fill_gradient(this->tachLEDs, TACH_LEDS - 1, CHSV(0, 255, 255), 0, CHSV(70, 255, 255), SHORTEST_HUES);
@@ -290,8 +289,7 @@ void IC_Dash::set_RPM(uint8_t _byte_H_, uint8_t _byte_L_)
     can_rpm |= (_byte_H_ << 8);
     can_rpm |= (_byte_L_);
 
-    // Serial.print("RPM: ");
-    // Serial.println(can_rpm);
+    this->height = map(can_rpm - 4000, 0, MAX_RPM - 4000, 0, TACH_LEDS + 1);
 
     this->DashGuy_.rpm = can_rpm;
 }

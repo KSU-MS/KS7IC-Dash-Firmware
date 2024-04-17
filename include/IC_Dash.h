@@ -46,11 +46,12 @@ private:
 
     // uint8_t  status;
 
-    // void handleTachometer();
-    // void handleGear();
-    // void handleStatus(uint8_t _status_);
-    // void handleCoolantTemp();
-    // void handleCheckEngine();
+    void set_RPM(uint8_t _byte_H_, uint8_t _byte_L_);
+    void set_GEAR(uint8_t _gear_);
+    // void set_STATUS(uint8_t _status_);
+    void set_CoolantTemp(uint8_t _byte_H_, uint8_t _byte_L_);
+    void set_BatteryVoltage(uint8_t _byte_H_, uint8_t _byte_L_);
+    void set_CheckEngineStatus(uint8_t _byte_H_, uint8_t _byte_L_);
     
 public:
 
@@ -75,13 +76,6 @@ public:
     void Yippie();
 
     void blinkStatusLed();
-
-    void set_RPM(uint8_t _byte_H_, uint8_t _byte_L_);
-    void set_GEAR(uint8_t _gear_);
-    // void set_STATUS(uint8_t _status_);
-    void set_CoolantTemp(uint8_t _byte_H_, uint8_t _byte_L_);
-    void set_BatteryVoltage(uint8_t _byte_H_, uint8_t _byte_L_);
-    void set_CheckEngineStatus(uint8_t _byte_H_, uint8_t _byte_L_);
 
     uint16_t getRPM();
     uint8_t getGEAR();
