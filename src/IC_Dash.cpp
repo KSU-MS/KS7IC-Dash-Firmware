@@ -21,9 +21,6 @@ IC_Dash::IC_Dash(uint16_t _rpm_ = 0, uint8_t _gear_ = 0, uint8_t _status_ = 0,
     this->DashGuy_.oilTemp           =           _oilTemp_;
     this->DashGuy_.batteryVoltage    =    _batteryVoltage_;
     this->DashGuy_.checkEngineStatus = _checkEngineStatus_;
-
-
-    // Serial.println("Initializing DASH..");
 }
 
 IC_Dash::~IC_Dash()

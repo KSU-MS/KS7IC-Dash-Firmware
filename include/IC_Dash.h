@@ -44,6 +44,9 @@ private:
     void set_CoolantTemp(uint8_t _byte_H_, uint8_t _byte_L_);
     void set_BatteryVoltage(uint8_t _byte_H_, uint8_t _byte_L_);
     void set_CheckEngineStatus(uint8_t _byte_H_, uint8_t _byte_L_);
+
+    void initLEDs();
+    void Yippie();
     
 public:
 
@@ -62,9 +65,6 @@ public:
     void handleGear();
     void handleCoolantTemp();
     void handleCheckEngine();
-
-    void initLEDs();
-    void Yippie();
 
     void blinkStatusLed();
 

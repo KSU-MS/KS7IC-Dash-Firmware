@@ -19,6 +19,9 @@
 #define          TACH_LEDS            15
 #define          STAT_LEDS            5
 
+#define          TACH_METRO_INT       1
+#define          MAIN_METRO_INT       1000
+
 #define          STATUS_LED           2     
 
 #define      LED_MAX_BRIGHTNESS       20
@@ -51,8 +54,6 @@
 #define        _IC_CHECK_ENG_         16
 
 #define       NUM_RXTX_MAILBOXES      4
-
-#define           RX_MAILBOX_1        0
 
 #define         CAN_BAUD_RATE         1000000
 

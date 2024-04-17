@@ -4,8 +4,8 @@
 
 
 
-Metro main_ = Metro(1000);
-Metro tach_ = Metro(1);
+Metro main_ = Metro(MAIN_METRO_INT);
+Metro tach_ = Metro(TACH_METRO_INT);
 
 
 
@@ -14,9 +14,6 @@ void setup()
     Serial.begin(9600);
 
     // while (!Serial); // Wait for serial connection before proceeding
-
-    // IC_Dash_ = new IC_Dash();
-    // IC_Can_ = new  IC_Can();
 
     IC_Dash_.initCan();
     IC_Dash_.initDash();
@@ -28,6 +25,8 @@ void setup()
 void loop()
 { 
     IC_Dash_.read_Can();
+
+    IC_Dash_.handleTachometer();
     
     if (main_.check())
     {
@@ -40,6 +39,4 @@ void loop()
     // {
     //     IC_Dash_.handleTachometer();
     // }
-
-    IC_Dash_.handleTachometer();
 }
