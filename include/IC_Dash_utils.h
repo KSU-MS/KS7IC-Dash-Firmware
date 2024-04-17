@@ -20,7 +20,7 @@
 #define          STAT_LEDS            5
 
 #define          TACH_METRO_INT       1
-#define          MAIN_METRO_INT       1000
+#define          MAIN_METRO_INT       5000
 
 #define          STATUS_LED           2     
 

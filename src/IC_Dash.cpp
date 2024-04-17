@@ -56,18 +56,18 @@ void IC_Dash::initDash()
 void IC_Dash::initCan()
 {
     IC_CAN_ORG.begin();
-    // this->IC_CAN_DUP.begin();
+    IC_CAN_DUP.begin();
 
     IC_CAN_ORG.setBaudRate(CAN_BAUD_RATE);
-    // this->IC_CAN_DUP.setBaudRate(CAN_BAUD_RATE);
+    IC_CAN_DUP.setBaudRate(CAN_BAUD_RATE);
 
     IC_CAN_ORG.setMaxMB(NUM_RXTX_MAILBOXES);
-    // this->IC_CAN_DUP.setMaxMB(NUM_RXTX_MAILBOXES);
+    IC_CAN_DUP.setMaxMB(NUM_RXTX_MAILBOXES);
 
     for (uint64_t BOX = 0; BOX < NUM_RXTX_MAILBOXES; BOX++)
     {
         IC_CAN_ORG.setMB((FLEXCAN_MAILBOX)BOX, RX, STD);
-        // this->IC_CAN_DUP.setMB((FLEXCAN_MAILBOX)BOX, TX, STD);
+        IC_CAN_DUP.setMB((FLEXCAN_MAILBOX)BOX, TX, STD);
     }
 }
 

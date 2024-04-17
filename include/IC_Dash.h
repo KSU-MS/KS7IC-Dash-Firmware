@@ -79,6 +79,7 @@ static CFastLED statLEDs_;
 static IC_Dash IC_Dash_;
 
 static FlexCAN_T4<CAN2, RX_SIZE_256, TX_SIZE_16> IC_CAN_ORG;
+static FlexCAN_T4<CAN1, RX_SIZE_256, TX_SIZE_16> IC_CAN_DUP;
 
 void initDash();
 void initCan();
