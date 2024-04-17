@@ -50,7 +50,7 @@
 #define      _IC_COOLANT_TEMP_        8
 #define        _IC_CHECK_ENG_         16
 
-#define       NUM_RXTX_MAILBOXES      8
+#define       NUM_RXTX_MAILBOXES      4
 
 #define           RX_MAILBOX_1        0
 

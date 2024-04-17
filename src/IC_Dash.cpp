@@ -1,7 +1,7 @@
 
 
 #include "IC_Dash.h"
-//#include "IC_Can.h"
+
 
 
 
@@ -58,18 +58,18 @@ void IC_Dash::initDash()
 
 void IC_Dash::initCan()
 {
-    this->IC_CAN_ORG.begin();
+    IC_CAN_ORG.begin();
     // this->IC_CAN_DUP.begin();
 
-    this->IC_CAN_ORG.setBaudRate(CAN_BAUD_RATE);
+    IC_CAN_ORG.setBaudRate(CAN_BAUD_RATE);
     // this->IC_CAN_DUP.setBaudRate(CAN_BAUD_RATE);
 
-    this->IC_CAN_ORG.setMaxMB(NUM_RXTX_MAILBOXES);
+    IC_CAN_ORG.setMaxMB(NUM_RXTX_MAILBOXES);
     // this->IC_CAN_DUP.setMaxMB(NUM_RXTX_MAILBOXES);
 
     for (uint64_t BOX = 0; BOX < NUM_RXTX_MAILBOXES; BOX++)
     {
-        this->IC_CAN_ORG.setMB((FLEXCAN_MAILBOX)BOX, RX, STD);
+        IC_CAN_ORG.setMB((FLEXCAN_MAILBOX)BOX, RX, STD);
         // this->IC_CAN_DUP.setMB((FLEXCAN_MAILBOX)BOX, TX, STD);
     }
 }
@@ -84,7 +84,7 @@ void IC_Dash::read_Can()
 
     CAN_message_t _msg_;
 
-    if (this->IC_CAN_ORG.read(_msg_))
+    if (IC_CAN_ORG.read(_msg_))
     {
         switch (_msg_.id)
         {
@@ -117,14 +117,6 @@ void IC_Dash::read_Can()
     #endif
     }
 }
-
-
-
-// void IC_Dash::dashDriver()
-// {
-//     this->handleTachometer();
-//     this->handleCoolantTemp();
-// }
 
 
 void IC_Dash::initLEDs()
@@ -176,8 +168,15 @@ void IC_Dash::handleTachometer()
     // CRGB* leds = this->tachLEDs;
 
     // Serial.println("Handle Tach!");
-
-    this->height = map(this->DashGuy_.rpm, 0, MAX_RPM, 0, TACH_LEDS + 1);
+    if (this->DashGuy_.rpm < 50)
+    {
+        this->height = 0;
+    }
+    else if (this->DashGuy_.rpm >= 50 && this->DashGuy_.rpm <= 4000)
+    {
+        this->height = 1;
+    }
+    else this->height = map(this->DashGuy_.rpm - 4000, 0, MAX_RPM - 4000, 0, TACH_LEDS + 1);
 
     // fill_gradient(leds, TACH_LEDS - 1, CHSV(0, 255, 255), 0, CHSV(70, 255, 255), SHORTEST_HUES);
     fill_gradient(this->tachLEDs, TACH_LEDS - 1, CHSV(0, 255, 255), 0, CHSV(70, 255, 255), SHORTEST_HUES);

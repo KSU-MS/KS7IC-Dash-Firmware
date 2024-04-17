@@ -38,7 +38,6 @@ private:
     CRGB tachLEDs[TACH_LEDS] = {CRGB::Black};
     CRGB statLEDs[STAT_LEDS] = {CRGB::Black};
 
-    FlexCAN_T4<CAN2, RX_SIZE_256, TX_SIZE_16> IC_CAN_ORG;
     // FlexCAN_T4<CAN1, RX_SIZE_256, TX_SIZE_16> IC_CAN_DUP;
 
     IC_DashGuy DashGuy_;
@@ -66,8 +65,6 @@ public:
 
     void read_Can();
 
-    // void dashDriver();
-
     void handleTachometer();
     void handleGear();
     // void handleStatus(uint8_t _status_);
@@ -75,8 +72,8 @@ public:
     void handleCheckEngine();
 
     void initLEDs();
-
     void Yippie();
+
     void blinkStatusLed();
 
     void set_RPM(uint8_t _byte_H_, uint8_t _byte_L_);
@@ -96,7 +93,9 @@ public:
 static CFastLED tachLEDs_;
 static CFastLED statLEDs_;
 
-static IC_Dash  IC_Dash_;
+static IC_Dash IC_Dash_;
+
+static FlexCAN_T4<CAN2, RX_SIZE_256, TX_SIZE_16> IC_CAN_ORG;
 
 void initDash();
 void initCan();
