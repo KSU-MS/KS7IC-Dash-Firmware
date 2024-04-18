@@ -164,6 +164,16 @@ void IC_Dash::handleTachometer()
 {
     fill_gradient(this->tachLEDs, TACH_LEDS - 1, CHSV(0, 255, 255), 0, CHSV(70, 255, 255), SHORTEST_HUES);
     
+    if (this->DashGuy_.rpm < 50)
+    {
+        this->height = 0;
+    }
+    else if (this->DashGuy_.rpm >= 50 && this->DashGuy_.rpm <= 4000)
+    {
+        this->height = 1;
+    }
+    else this->height = map(this->DashGuy_.rpm - 4000, 0, MAX_RPM - 4000, 0, TACH_LEDS + 1);
+
     for (int i = 0; i < TACH_LEDS; i++) 
     {
         if (i >= this->height)
@@ -171,7 +181,6 @@ void IC_Dash::handleTachometer()
             this->tachLEDs[i] = CRGB::Black;
         }
     }
-
     tachLEDs_.show();
 }
 
@@ -233,16 +242,6 @@ void IC_Dash::set_RPM(uint8_t _byte_H_, uint8_t _byte_L_)
 
     can_rpm |= (_byte_H_ << 8);
     can_rpm |= (_byte_L_);
-
-    if (can_rpm < 50)
-    {
-        this->height = 0;
-    }
-    else if (can_rpm >= 50 && can_rpm <= 4000)
-    {
-        this->height = 1;
-    }
-    else this->height = map(can_rpm - 4000, 0, MAX_RPM - 4000, 0, TACH_LEDS + 1);
     
     this->DashGuy_.rpm = can_rpm;
 }
