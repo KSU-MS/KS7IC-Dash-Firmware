@@ -126,8 +126,6 @@ void IC_Dash::initLEDs()
     statLEDs_.setBrightness(LED_MAX_BRIGHTNESS);
     tachLEDs_.setMaxRefreshRate(LED_MAX_REFRESHRATE);
     statLEDs_.setMaxRefreshRate(LED_MAX_REFRESHRATE);
-
-    fill_gradient(this->tachLEDs, TACH_LEDS - 1, CHSV(0, 255, 255), 0, CHSV(70, 255, 255), SHORTEST_HUES);
 }
 
 void IC_Dash::Yippie()
@@ -164,15 +162,13 @@ void IC_Dash::blinkStatusLed()
 
 void IC_Dash::handleTachometer()
 {
-    CRGB* leds = this->tachLEDs;
-
-    // fill_gradient(leds, TACH_LEDS - 1, CHSV(0, 255, 255), 0, CHSV(70, 255, 255), SHORTEST_HUES);
+    fill_gradient(this->tachLEDs, TACH_LEDS - 1, CHSV(0, 255, 255), 0, CHSV(70, 255, 255), SHORTEST_HUES);
     
     for (int i = 0; i < TACH_LEDS; i++) 
     {
         if (i >= this->height)
         {
-            leds[i] = CRGB::Black;
+            this->tachLEDs[i] = CRGB::Black;
         }
     }
 
