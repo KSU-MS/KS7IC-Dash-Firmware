@@ -25,14 +25,14 @@ void setup()
 void loop()
 { 
     IC_Dash_.read_Can();
-
     IC_Dash_.handleTachometer();
     
     if (main_.check())
     {
-        IC_Dash_.handleCoolantTemp();
         IC_Dash_.handleGear();
-        IC_Dash_.handleCheckEngine();
+        IC_Dash_.handleCoolantTempLight();
+        IC_Dash_.handleCheckEngineLight();
+        IC_Dash_.handleOilPressureLight();
     }
 
     // if (tach_.check())

@@ -9,7 +9,7 @@
 
 IC_Dash::IC_Dash(uint16_t _rpm_ = 0, uint8_t _gear_ = 0, uint8_t _status_ = 0,
                  uint16_t _coolantTemp_ = 0, uint16_t _oilTemp_ = 0, uint16_t _batteryVoltage_ = 0,
-                 uint16_t _checkEngineStatus_ = 0)
+                 uint16_t _checkEngineStatus_ = 0, uint16_t _oilPressure_ = 0)
 {
     // Probably not the most ideal way to do this but whomp whomp.
     
@@ -21,6 +21,7 @@ IC_Dash::IC_Dash(uint16_t _rpm_ = 0, uint8_t _gear_ = 0, uint8_t _status_ = 0,
     this->DashGuy_.oilTemp           =           _oilTemp_;
     this->DashGuy_.batteryVoltage    =    _batteryVoltage_;
     this->DashGuy_.checkEngineStatus = _checkEngineStatus_;
+    this->DashGuy_.oilPressure       =       _oilPressure_;
 }
 
 IC_Dash::~IC_Dash()
@@ -85,7 +86,7 @@ void IC_Dash::read_Can()
     {
         switch (_msg_.id)
         {
-        case _IC_CAN_MSG_GROUP_0_:
+        case _IC_CAN_MSG_GROUP_63_:
             this->set_RPM(_msg_.buf[6], _msg_.buf[7]);
             // Serial.println("RPM");
             break;
@@ -93,14 +94,20 @@ void IC_Dash::read_Can()
             this->set_CoolantTemp(_msg_.buf[6], _msg_.buf[7]); 
             // Serial.println("Coolant Temp");
             break;
-        case _IC_CAN_MSG_GROUP_3_:
-            this->set_BatteryVoltage(_msg_.buf[2], _msg_.buf[3]);
-            // Serial.println("Battery Voltage");
+        // case _IC_CAN_MSG_GROUP_3_:
+        //     this->set_BatteryVoltage(_msg_.buf[2], _msg_.buf[3]);
+        //     // Serial.println("Battery Voltage");
+        //     break;
+        case _IC_CAN_MSG_GROUP_14_:
+            this->set_OilPressure(_msg_.buf[0], _msg_.buf[1]);
             break;
         case _IC_CAN_MSG_GROUP_33_:
             this->set_GEAR(_msg_.buf[6]);
             // Serial.println("Gear");
             break;  
+        case _IC_CAN_MSG_GROUP_54_:
+            this->set_CheckEngineStatus(_msg_.buf[0], _msg_.buf[1]);
+            break;
         case _IC_CAN_MSG_GROUP_60_:
             break;      
         default:
@@ -109,7 +116,7 @@ void IC_Dash::read_Can()
 
     #if _DEBUG_
 
-        this->.blinkStatusLed();
+        // this->.blinkStatusLed();
 
     #endif
     }
@@ -161,9 +168,7 @@ void IC_Dash::blinkStatusLed()
 
 
 void IC_Dash::handleTachometer()
-{
-    fill_gradient(this->tachLEDs, TACH_LEDS - 1, CHSV(0, 255, 255), 0, CHSV(70, 255, 255), SHORTEST_HUES);
-    
+{   
     if (this->DashGuy_.rpm < 50)
     {
         this->height = 0;
@@ -174,14 +179,33 @@ void IC_Dash::handleTachometer()
     }
     else this->height = map(this->DashGuy_.rpm - 4000, 0, MAX_RPM - 4000, 0, TACH_LEDS + 1);
 
-    for (int i = 0; i < TACH_LEDS; i++) 
+    if (this->height == TACH_LEDS)
     {
-        if (i >= this->height)
-        {
-            this->tachLEDs[i] = CRGB::Black;
-        }
+        fill_solid(this->tachLEDs, TACH_LEDS, CRGB::Red);
+        tachLEDs_.show();
+        delay(50);
+
+        fill_solid(this->tachLEDs, TACH_LEDS, CRGB::Black);
+        tachLEDs_.show();
+        delay(100);
+
+        fill_solid(this->tachLEDs, TACH_LEDS, CRGB::Red);
+        tachLEDs_.show();
+        delay(50);
     }
-    tachLEDs_.show();
+    else
+    {
+        fill_gradient(this->tachLEDs, TACH_LEDS - 1, CHSV(0, 255, 255), 0, CHSV(70, 255, 255), SHORTEST_HUES);
+        
+        for (int i = 0; i < TACH_LEDS; i++) 
+        {
+            if (i >= this->height)
+            {
+                this->tachLEDs[i] = CRGB::Black;
+            }
+        }
+        tachLEDs_.show();
+    }
 }
 
 void IC_Dash::handleGear()
@@ -207,43 +231,60 @@ void IC_Dash::handleGear()
 }
 
 
-void IC_Dash::handleCoolantTemp()
+void IC_Dash::handleCoolantTempLight()
 {
-    CRGB* leds = this->statLEDs;
-
-    if (this->DashGuy_.coolantTemp < 180.0f)
+    if (this->DashGuy_.coolantTemp < 180)
     {
-        leds[3] = CRGB::Blue;
+        this->statLEDs[3] = CRGB::Blue;
     }
-    else if (this->DashGuy_.coolantTemp >= 180.0f || 
+    else if (this->DashGuy_.coolantTemp >= 180.0f && 
              this->DashGuy_.coolantTemp < 220.0f)
     {
-        leds[3] = CRGB::Black;
+        this->statLEDs[3] = CRGB::Black;
     }
-    else if (this->DashGuy_.coolantTemp >= 220.0f ||
+    else if (this->DashGuy_.coolantTemp >= 220.0f &&
              this->DashGuy_.coolantTemp <= 240.0f)
     {
-        leds[3] = CRGB::Yellow;
+        this->statLEDs[3] = CRGB::Yellow;
     }
-    else leds[3] = CRGB::Red;
+    else this->statLEDs[3] = CRGB::Red;
 
     statLEDs_.show();
 }
 
-void IC_Dash::handleCheckEngine()
+void IC_Dash::handleCheckEngineLight()
 {
+    if (this->DashGuy_.checkEngineStatus > 0)
+    {
+        this->statLEDs[4] = CRGB::Orange;
+    }
+    else this->statLEDs[4] = CRGB::Black;
 
+    statLEDs_.show();
 }
 
+void IC_Dash::handleOilPressureLight()
+{
+    // under 20 black
+    // over  40 red
+    // green inbetween
+
+    if (this->DashGuy_.oilPressure <= 20)
+    {
+        this->statLEDs[0] = CRGB::Black;
+    }
+    else if (this->DashGuy_.oilPressure > 20 && this->DashGuy_.oilPressure < 40)
+    {
+        this->statLEDs[0] = CRGB::Green;
+    }
+    else this->statLEDs[0] = CRGB::Red;
+
+    statLEDs_.show();
+}
 
 void IC_Dash::set_RPM(uint8_t _byte_H_, uint8_t _byte_L_)
 {
-    uint16_t can_rpm = 0;
-
-    can_rpm |= (_byte_H_ << 8);
-    can_rpm |= (_byte_L_);
-    
-    this->DashGuy_.rpm = can_rpm;
+    this->DashGuy_.rpm = ((_byte_H_ << 8) | (_byte_L_));
 }
 
 void IC_Dash::set_GEAR(uint8_t _gear_)
@@ -258,35 +299,22 @@ void IC_Dash::set_GEAR(uint8_t _gear_)
 
 void IC_Dash::set_CoolantTemp(uint8_t _byte_H_, uint8_t _byte_L_)
 {
-    uint16_t can_coolantTemp = 0;
-
-    can_coolantTemp |= (_byte_H_ << 8);
-    can_coolantTemp |= (_byte_L_);
-
-    this->DashGuy_.coolantTemp = can_coolantTemp;
+    this->DashGuy_.coolantTemp = ((_byte_H_ << 8) | (_byte_L_));
 }
 
 void IC_Dash::set_BatteryVoltage(uint8_t _byte_H_, uint8_t _byte_L_)
 {
-    uint16_t can_batteryVoltage = 0;
-
-    can_batteryVoltage |= (_byte_H_ << 8);
-    can_batteryVoltage |= (_byte_L_);
-
-    // Serial.print((float)can_batteryVoltage / 10.0f);
-    // Serial.println("V");
-
-    this->DashGuy_.batteryVoltage = can_batteryVoltage;
+    this->DashGuy_.batteryVoltage = ((_byte_H_ << 8) | (_byte_L_)) / 10;
 }
 
 void IC_Dash::set_CheckEngineStatus(uint8_t _byte_H_, uint8_t _byte_L_)
 {
-    uint16_t can_checkEngineStatus = 0;
+    this->DashGuy_.checkEngineStatus = (_byte_H_ << 8) | (_byte_L_);
+}
 
-    can_checkEngineStatus |= (_byte_H_ << 8);
-    can_checkEngineStatus |= (_byte_L_);
-
-    this->DashGuy_.checkEngineStatus = can_checkEngineStatus;
+void IC_Dash::set_OilPressure(uint8_t _byte_H_, uint8_t _byte_L_)
+{
+    this->DashGuy_.oilPressure = ((_byte_H_ << 8) | (_byte_L_));
 }
 
 

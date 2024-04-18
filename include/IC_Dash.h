@@ -23,6 +23,7 @@ typedef struct IC_DashGuy
     uint16_t           oilTemp;
     uint16_t    batteryVoltage;
     uint16_t checkEngineStatus;
+    uint16_t       oilPressure;
 
 } IC_DashGuy;
 
@@ -44,6 +45,7 @@ private:
     void set_CoolantTemp(uint8_t _byte_H_, uint8_t _byte_L_);
     void set_BatteryVoltage(uint8_t _byte_H_, uint8_t _byte_L_);
     void set_CheckEngineStatus(uint8_t _byte_H_, uint8_t _byte_L_);
+    void set_OilPressure(uint8_t _byte_H_, uint8_t _byte_L_);
 
     void initLEDs();
     void Yippie();
@@ -52,7 +54,7 @@ public:
 
      IC_Dash(uint16_t _rpm_ = 0, uint8_t _gear_ = 0, uint8_t _status_ = 0,
              uint16_t _coolantTemp_ = 0, uint16_t _oilTemp_ = 0, uint16_t _batteryVoltage_ = 0,
-             uint16_t _checkEngineStatus_ = 0);
+             uint16_t _checkEngineStatus_ = 0, uint16_t _oilPressure_ = 0);
 
     ~IC_Dash();
 
@@ -63,8 +65,9 @@ public:
 
     void handleTachometer();
     void handleGear();
-    void handleCoolantTemp();
-    void handleCheckEngine();
+    void handleCoolantTempLight();
+    void handleCheckEngineLight();
+    void handleOilPressureLight();
 
     void blinkStatusLed();
 
