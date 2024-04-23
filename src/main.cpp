@@ -34,9 +34,4 @@ void loop()
         IC_Dash_.handleCheckEngineLight();
         IC_Dash_.handleOilPressureLight();
     }
-
-    // if (tach_.check())
-    // {
-    //     IC_Dash_.handleTachometer();
-    // }
 }

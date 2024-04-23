@@ -3,7 +3,7 @@
 #define IC_DASH_UTILS.H
 
 
-#define           _DEBUG_             1
+#define           _DEBUG_             0
 
 
 #define           LOWV_EN             23
@@ -14,8 +14,6 @@
 #define            BCD_C              40
 #define            BCD_D              41
 
-#define       PORT1_DR_OUTPUT        0x303000000
-
 #define          TACH_LEDS            15
 #define          STAT_LEDS            5
 
@@ -24,8 +22,8 @@
 
 #define          STATUS_LED           2     
 
-#define      LED_MAX_BRIGHTNESS       20
-#define     LED_MAX_REFRESHRATE       144
+#define      LED_MAX_BRIGHTNESS       40
+#define     LED_MAX_REFRESHRATE       10000
 
 #define          TACH_DPIN            25
 #define          INDI_DPIN            26
@@ -60,14 +58,13 @@
 
 #if _DEBUG_
 
-#define     _IC_CAN_MSG_GROUP_0_      0x5F0
+#define     _IC_CAN_MSG_GROUP_0_      0x633
 #define     _IC_CAN_MSG_GROUP_2_      0x631
 #define     _IC_CAN_MSG_GROUP_3_      0x5F3
 #define     _IC_CAN_MSG_GROUP_14_     0x630
 #define     _IC_CAN_MSG_GROUP_33_     0x611
 #define     _IC_CAN_MSG_GROUP_54_     0x632
 #define     _IC_CAN_MSG_GROUP_60_     0x62C
-#define     _IC_CAN_MSG_GROUP_63_     0x62F
 
 #else
 
@@ -78,7 +75,6 @@
 #define     _IC_CAN_MSG_GROUP_33_     0x611
 #define     _IC_CAN_MSG_GROUP_54_     0x632
 #define     _IC_CAN_MSG_GROUP_60_     0x62C
-#define     _IC_CAN_MSG_GROUP_63_     0x62F
 
 #endif
 

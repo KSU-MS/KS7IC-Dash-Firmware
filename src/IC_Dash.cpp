@@ -86,7 +86,7 @@ void IC_Dash::read_Can()
     {
         switch (_msg_.id)
         {
-        case _IC_CAN_MSG_GROUP_63_:
+        case _IC_CAN_MSG_GROUP_0_:
             this->set_RPM(_msg_.buf[6], _msg_.buf[7]);
             // Serial.println("RPM");
             break;
@@ -99,7 +99,7 @@ void IC_Dash::read_Can()
         //     // Serial.println("Battery Voltage");
         //     break;
         case _IC_CAN_MSG_GROUP_14_:
-            this->set_OilPressure(_msg_.buf[0], _msg_.buf[1]);
+            this->set_OilPressure(_msg_.buf[2], _msg_.buf[3]);
             break;
         case _IC_CAN_MSG_GROUP_33_:
             this->set_GEAR(_msg_.buf[6]);
@@ -183,20 +183,23 @@ void IC_Dash::handleTachometer()
     {
         fill_solid(this->tachLEDs, TACH_LEDS, CRGB::Red);
         tachLEDs_.show();
-        delay(50);
+        delay(40);
 
         fill_solid(this->tachLEDs, TACH_LEDS, CRGB::Black);
         tachLEDs_.show();
-        delay(100);
+        delay(75);
 
         fill_solid(this->tachLEDs, TACH_LEDS, CRGB::Red);
         tachLEDs_.show();
-        delay(50);
+        delay(40);
     }
     else
     {
-        fill_gradient(this->tachLEDs, TACH_LEDS - 1, CHSV(0, 255, 255), 0, CHSV(70, 255, 255), SHORTEST_HUES);
+        //fill_gradient(this->tachLEDs, TACH_LEDS - 1, CHSV(0, 255, 255), 0, CHSV(70, 255, 255), SHORTEST_HUES);
         
+        fill_solid(this->tachLEDs, TACH_LEDS, CRGB::Red);
+        fill_solid(this->tachLEDs, TACH_LEDS - 5, CRGB::Green);
+
         for (int i = 0; i < TACH_LEDS; i++) 
         {
             if (i >= this->height)
@@ -299,7 +302,7 @@ void IC_Dash::set_GEAR(uint8_t _gear_)
 
 void IC_Dash::set_CoolantTemp(uint8_t _byte_H_, uint8_t _byte_L_)
 {
-    this->DashGuy_.coolantTemp = ((_byte_H_ << 8) | (_byte_L_));
+    this->DashGuy_.coolantTemp = ((_byte_H_ << 8) | (_byte_L_)) / 10;
 }
 
 void IC_Dash::set_BatteryVoltage(uint8_t _byte_H_, uint8_t _byte_L_)
@@ -314,7 +317,7 @@ void IC_Dash::set_CheckEngineStatus(uint8_t _byte_H_, uint8_t _byte_L_)
 
 void IC_Dash::set_OilPressure(uint8_t _byte_H_, uint8_t _byte_L_)
 {
-    this->DashGuy_.oilPressure = ((_byte_H_ << 8) | (_byte_L_));
+    this->DashGuy_.oilPressure = ((_byte_H_ << 8) | (_byte_L_)) / 10;
 }
 
 
