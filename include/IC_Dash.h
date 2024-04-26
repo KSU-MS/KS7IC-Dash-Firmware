@@ -71,8 +71,8 @@ public:
 
     void blinkStatusLed();
 
-    uint16_t getRPM();
-    uint8_t getGEAR();
+    // uint16_t getRPM();
+    // uint8_t getGEAR();
 };
 
 

@@ -56,27 +56,23 @@
 #define         CAN_BAUD_RATE         1000000
 
 
-#if _DEBUG_
-
-#define     _IC_CAN_MSG_GROUP_0_      0x633
-#define     _IC_CAN_MSG_GROUP_2_      0x631
-#define     _IC_CAN_MSG_GROUP_3_      0x5F3
-#define     _IC_CAN_MSG_GROUP_14_     0x630
-#define     _IC_CAN_MSG_GROUP_33_     0x611
-#define     _IC_CAN_MSG_GROUP_54_     0x632
-#define     _IC_CAN_MSG_GROUP_60_     0x62C
-
-#else
-
-#define     _IC_CAN_MSG_GROUP_0_      0x5F0
-#define     _IC_CAN_MSG_GROUP_2_      0x5F2
-#define     _IC_CAN_MSG_GROUP_3_      0x5F3
-#define     _IC_CAN_MSG_GROUP_14_     0x5FE
-#define     _IC_CAN_MSG_GROUP_33_     0x611
-#define     _IC_CAN_MSG_GROUP_54_     0x632
-#define     _IC_CAN_MSG_GROUP_60_     0x62C
-
-#endif
+    #if _DEBUG_
+        #define     _IC_CAN_MSG_GROUP_0_      0x633
+        #define     _IC_CAN_MSG_GROUP_2_      0x631
+        #define     _IC_CAN_MSG_GROUP_3_      0x5F3
+        #define     _IC_CAN_MSG_GROUP_14_     0x630
+        #define     _IC_CAN_MSG_GROUP_33_     0x611
+        #define     _IC_CAN_MSG_GROUP_54_     0x632
+        #define     _IC_CAN_MSG_GROUP_60_     0x62C
+    #else
+        #define     _IC_CAN_MSG_GROUP_0_      0x5F0
+        #define     _IC_CAN_MSG_GROUP_2_      0x5F2
+        #define     _IC_CAN_MSG_GROUP_3_      0x5F3
+        #define     _IC_CAN_MSG_GROUP_14_     0x5FE
+        #define     _IC_CAN_MSG_GROUP_33_     0x611
+        #define     _IC_CAN_MSG_GROUP_54_     0x632
+        #define     _IC_CAN_MSG_GROUP_60_     0x62C
+    #endif
 
 
 

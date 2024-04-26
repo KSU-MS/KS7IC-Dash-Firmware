@@ -321,15 +321,15 @@ void IC_Dash::set_OilPressure(uint8_t _byte_H_, uint8_t _byte_L_)
 }
 
 
-uint16_t IC_Dash::getRPM()
-{
-    return this->DashGuy_.rpm;
-}
+// uint16_t IC_Dash::getRPM()
+// {
+//     return this->DashGuy_.rpm;
+// }
 
-uint8_t IC_Dash::getGEAR()
-{
-    return this->DashGuy_.gear;
-}
+// uint8_t IC_Dash::getGEAR()
+// {
+//     return this->DashGuy_.gear;
+// }
 
 // uint8_t IC_Dash::getSTATUS()
 // {
