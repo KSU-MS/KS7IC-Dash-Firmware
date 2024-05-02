@@ -28,7 +28,8 @@
 #define          TACH_DPIN            25
 #define          INDI_DPIN            26
 
-#define           MAX_RPM             12000
+#define           MAX_RPM             10000
+#define         REDLINE_RPM           12000
 
 #define        _IC_CAN_NONE_          0
 #define       _IC_CAN_READY_          1
@@ -70,7 +71,8 @@
         #define     _IC_CAN_MSG_GROUP_3_      0x5F3
         #define     _IC_CAN_MSG_GROUP_14_     0x5FE
         #define     _IC_CAN_MSG_GROUP_33_     0x611
-        #define     _IC_CAN_MSG_GROUP_54_     0x632
+        #define     _IC_CAN_MSG_GROUP_52      0x624
+        #define     _IC_CAN_MSG_GROUP_54_     0x626
         #define     _IC_CAN_MSG_GROUP_60_     0x62C
         #define _IC_CAN_MSG_SHIFT_INDICATOR 420 // dont know real ID yet
     #endif

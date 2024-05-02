@@ -81,9 +81,9 @@ void IC_Dash::read_Can()
     // After testing I think this is better ngl
 
     CAN_message_t _msg_;
-
     if (IC_CAN_ORG.read(_msg_))
     {
+        unpack_flexcan_message(_msg_);
         switch (_msg_.id)
         {
         case _IC_CAN_MSG_GROUP_0_:
@@ -102,11 +102,13 @@ void IC_Dash::read_Can()
             this->set_OilPressure(_msg_.buf[2], _msg_.buf[3]);
             break;
         case _IC_CAN_MSG_GROUP_33_:
-            this->set_GEAR(_msg_.buf[6]);
-            // Serial.println("Gear");
+            decode_can_0x611_gear(&ksu_can,&DashGuy_.gear);
             break;  
         case _IC_CAN_MSG_GROUP_54_:
-            this->set_CheckEngineStatus(_msg_.buf[0], _msg_.buf[1]);
+            decode_can_0x626_cel_status(&ksu_can,&DashGuy_.checkEngineStatus);
+            break;
+        case CAN_ID_MEGASQUIRT_GP52:
+            _time_to_shift = ksu_can.can_0x624_megasquirt_gp52.canout & 0x01;
             break;
         case _IC_CAN_MSG_GROUP_60_:
             break;    
@@ -123,6 +125,17 @@ void IC_Dash::read_Can()
 
     #endif
     }
+}
+
+// Immediately transmit the dash status
+void IC_Dash::send_device_status()
+{
+    CAN_message_t msg;
+    msg.id = 0x666;
+    msg.len = sizeof(this->_dash_status);
+    _dash_status.on_time_seconds=millis()/1000;
+    memcpy(&msg.buf,&_dash_status,sizeof(_dash_status));
+    IC_CAN_ORG.write(msg);
 }
 
 
@@ -180,17 +193,27 @@ void IC_Dash::handleTachometer()
     {
         this->height = 1;
     }
-    else this->height = map(this->DashGuy_.rpm - 4000, 0, MAX_RPM - 4000, 0, TACH_LEDS + 1);
-    // if shift flag is true or we are above shift rpm for our current gear anyway
-    if ((this->_time_to_shift) || (this->DashGuy_.rpm >= shiftpointmap.at(this->DashGuy_.gear)))
+    else {this->height = map(this->DashGuy_.rpm - 4000, 0, MAX_RPM - 4000, 0, TACH_LEDS + 1);}
+    if (DashGuy_.rpm > 10000)
     {
-        // If light on is true, we are showing PURPLE
+        tachLEDs_.setBrightness(128);
+    }
+    else {tachLEDs_.setBrightness(LED_MAX_BRIGHTNESS);}
+    if (this->DashGuy_.rpm >= 10000 && this->DashGuy_.rpm<=11000)
+    {
+        ramp_colors_fancy_shift(CRGB::Purple,CRGB::Black,CRGB::Black);
+        tachLEDs_.show();
+    }
+    // if shift flag is true or we are above shift rpm for our current gear anyway
+    else if ((this->_time_to_shift) || (this->DashGuy_.rpm >= shiftpointmap.at(this->DashGuy_.gear) && this->DashGuy_.rpm <= REDLINE_RPM))
+    {
+        // If light on is true, we are showing Yellow
         if (shiftLightBlinker.light_on == true)
         {
-        fill_solid(this->tachLEDs, TACH_LEDS, CRGB::Purple);
+        fill_solid(this->tachLEDs, TACH_LEDS, CRGB::Yellow);
 
         // transition when timer has passed 15ms
-        if (shiftLightBlinker.shiftLightBlinkTime >= 15)
+        if (shiftLightBlinker.shiftLightBlinkTime >= 30)
         {
             // set light_on false and reset timer
             shiftLightBlinker.light_on = false;
@@ -201,7 +224,7 @@ void IC_Dash::handleTachometer()
         else if (shiftLightBlinker.light_on == false)
         {
         fill_solid(this->tachLEDs, TACH_LEDS, CRGB::Black);
-        if (shiftLightBlinker.shiftLightBlinkTime >= 5)
+        if (shiftLightBlinker.shiftLightBlinkTime >= 20)
         {
             shiftLightBlinker.light_on = true;
             shiftLightBlinker.shiftLightBlinkTime = 0;
@@ -209,15 +232,14 @@ void IC_Dash::handleTachometer()
         }
         tachLEDs_.show(); 
     }
-    else if (this->height == TACH_LEDS)
+    else if (this->DashGuy_.rpm > REDLINE_RPM)
     {
         // If light on is true, we are showing red
         if (shiftLightBlinker.light_on == true)
         {
         fill_solid(this->tachLEDs, TACH_LEDS, CRGB::Red);
-
         // transition when timer has passed 40ms
-        if (shiftLightBlinker.shiftLightBlinkTime >= 40)
+        if (shiftLightBlinker.shiftLightBlinkTime >= 30)
         {
             // set light_on false and reset timer
             shiftLightBlinker.light_on = false;
@@ -228,7 +250,7 @@ void IC_Dash::handleTachometer()
         else if (shiftLightBlinker.light_on == false)
         {
         fill_solid(this->tachLEDs, TACH_LEDS, CRGB::Black);
-        if (shiftLightBlinker.shiftLightBlinkTime >= 75)
+        if (shiftLightBlinker.shiftLightBlinkTime >= 20)
         {
             shiftLightBlinker.light_on = true;
             shiftLightBlinker.shiftLightBlinkTime = 0;
@@ -238,8 +260,6 @@ void IC_Dash::handleTachometer()
     }
     else
     {
-        //fill_gradient(this->tachLEDs, TACH_LEDS - 1, CHSV(0, 255, 255), 0, CHSV(70, 255, 255), SHORTEST_HUES);
-        
         fill_solid(this->tachLEDs, TACH_LEDS, CRGB::Red);
         fill_solid(this->tachLEDs, TACH_LEDS - 5, CRGB::Green);
 
@@ -254,6 +274,23 @@ void IC_Dash::handleTachometer()
     }
 }
 
+// make 0-6 and 8-15 fade in
+void IC_Dash::ramp_colors_fancy_shift(CRGB startcol, CRGB endcol,CRGB backcolor,int minrpm = 10000, int maxrpm = 11000)
+{
+
+    uint8_t enabled_leds = map(DashGuy_.rpm,minrpm,maxrpm,0,(TACH_LEDS/2));
+    fill_solid(tachLEDs,TACH_LEDS,backcolor);
+    fill_gradient_RGB(tachLEDs,0,startcol,enabled_leds,endcol);
+    fill_gradient_RGB(tachLEDs,TACH_LEDS-1-enabled_leds,endcol,TACH_LEDS-1,startcol);
+    // fill_gradient(tachLEDs,0,startcol,enabled_leds,endcol);
+
+    // for (int i =0; i < enabled_leds; i++)
+    // {
+    //     tachLEDs[i] = CRGB::Purple;
+    //     tachLEDs[TACH_LEDS-1-i] = CRGB::Purple;
+    // }
+
+}
 void IC_Dash::handleGear()
 {
     digitalWrite(GEAR_EN, LOW);

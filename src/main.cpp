@@ -33,5 +33,6 @@ void loop()
         IC_Dash_.handleCoolantTempLight();
         IC_Dash_.handleCheckEngineLight();
         IC_Dash_.handleOilPressureLight();
+        IC_Dash_.send_device_status();
     }
 }
