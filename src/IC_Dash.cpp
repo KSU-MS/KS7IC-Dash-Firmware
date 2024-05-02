@@ -109,7 +109,10 @@ void IC_Dash::read_Can()
             this->set_CheckEngineStatus(_msg_.buf[0], _msg_.buf[1]);
             break;
         case _IC_CAN_MSG_GROUP_60_:
-            break;      
+            break;    
+        case _IC_CAN_MSG_SHIFT_INDICATOR:
+            this->_time_to_shift = _msg_.buf[0];
+            break;  
         default:
             break;
         }
@@ -178,20 +181,60 @@ void IC_Dash::handleTachometer()
         this->height = 1;
     }
     else this->height = map(this->DashGuy_.rpm - 4000, 0, MAX_RPM - 4000, 0, TACH_LEDS + 1);
-
-    if (this->height == TACH_LEDS)
+    // if shift flag is true or we are above shift rpm for our current gear anyway
+    if ((this->_time_to_shift) || (this->DashGuy_.rpm >= shiftpointmap.at(this->DashGuy_.gear)))
     {
-        fill_solid(this->tachLEDs, TACH_LEDS, CRGB::Red);
-        tachLEDs_.show();
-        delay(40);
+        // If light on is true, we are showing PURPLE
+        if (shiftLightBlinker.light_on == true)
+        {
+        fill_solid(this->tachLEDs, TACH_LEDS, CRGB::Purple);
 
+        // transition when timer has passed 15ms
+        if (shiftLightBlinker.shiftLightBlinkTime >= 15)
+        {
+            // set light_on false and reset timer
+            shiftLightBlinker.light_on = false;
+            shiftLightBlinker.shiftLightBlinkTime = 0;
+        }
+        }
+        // if light on false, show black
+        else if (shiftLightBlinker.light_on == false)
+        {
         fill_solid(this->tachLEDs, TACH_LEDS, CRGB::Black);
-        tachLEDs_.show();
-        delay(75);
-
+        if (shiftLightBlinker.shiftLightBlinkTime >= 5)
+        {
+            shiftLightBlinker.light_on = true;
+            shiftLightBlinker.shiftLightBlinkTime = 0;
+        }
+        }
+        tachLEDs_.show(); 
+    }
+    else if (this->height == TACH_LEDS)
+    {
+        // If light on is true, we are showing red
+        if (shiftLightBlinker.light_on == true)
+        {
         fill_solid(this->tachLEDs, TACH_LEDS, CRGB::Red);
+
+        // transition when timer has passed 40ms
+        if (shiftLightBlinker.shiftLightBlinkTime >= 40)
+        {
+            // set light_on false and reset timer
+            shiftLightBlinker.light_on = false;
+            shiftLightBlinker.shiftLightBlinkTime = 0;
+        }
+        }
+        // if light on false, show black
+        else if (shiftLightBlinker.light_on == false)
+        {
+        fill_solid(this->tachLEDs, TACH_LEDS, CRGB::Black);
+        if (shiftLightBlinker.shiftLightBlinkTime >= 75)
+        {
+            shiftLightBlinker.light_on = true;
+            shiftLightBlinker.shiftLightBlinkTime = 0;
+        }
+        }
         tachLEDs_.show();
-        delay(40);
     }
     else
     {

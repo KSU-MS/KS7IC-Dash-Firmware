@@ -8,6 +8,7 @@
 #include <FlexCAN_T4.h>
 
 #include "IC_Dash_utils.h"
+#include "shift_points.h"
 
 
 // Oil Pressure Analog IN 5
@@ -27,6 +28,12 @@ typedef struct IC_DashGuy
 
 } IC_DashGuy;
 
+typedef struct shiftLightBlink_t
+{
+    elapsedMillis shiftLightBlinkTime = 0;
+    bool light_on = 0;
+} shiftLightBlink_t;
+
 
 // BAABAA-BOOEY
 class IC_Dash
@@ -39,7 +46,8 @@ private:
     IC_DashGuy DashGuy_;
 
     uint8_t height = 0;
-
+    shiftLightBlink_t shiftLightBlinker;
+    bool _time_to_shift;
     void set_RPM(uint8_t _byte_H_, uint8_t _byte_L_);
     void set_GEAR(uint8_t _gear_);
     void set_CoolantTemp(uint8_t _byte_H_, uint8_t _byte_L_);

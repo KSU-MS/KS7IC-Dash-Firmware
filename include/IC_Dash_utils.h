@@ -72,6 +72,7 @@
         #define     _IC_CAN_MSG_GROUP_33_     0x611
         #define     _IC_CAN_MSG_GROUP_54_     0x632
         #define     _IC_CAN_MSG_GROUP_60_     0x62C
+        #define _IC_CAN_MSG_SHIFT_INDICATOR 420 // dont know real ID yet
     #endif
 
 
